@@ -1,15 +1,12 @@
 <template>
   <div>
-    <h1>Hello {{ message }}</h1>
+    <h1>Hello Empty</h1>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      message: "Welcome to the new Vue.js Page!"
-    };
   }
 };
 </script>

@@ -1,26 +1,11 @@
+
+<script setup lang="js">
+import { useAuthStore } from '../store/authStore'
+const authStore = useAuthStore()
+console.log("Username: "+authStore.username)
+</script>
 <template>
   <q-page class="flex flex-center">
-    <h1>Welcome </h1>
-
+    <h1>Welcome {{authStore.username}}!</h1>
   </q-page>
 </template>
-
-<script>
-import { mapGetters } from 'vuex'
-
-export default {
-  name: 'IndexPage',
-  methods: {
-    routeHome: function () {
-      this.$store.dispatch('routePage', { pageName: '/', url: '' })
-    }
-  },
-  computed: {
-    ...mapGetters('auth', [
-      'username',
-      'currentToken',
-      'devFooter'
-    ])
-  },
-}
-</script>

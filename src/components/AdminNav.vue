@@ -1,8 +1,7 @@
 <template>
   <q-item
     clickable
-    @click="routeClick(link)"
-  ><q-item-section
+    @click="routeClick(link)"><q-item-section
       v-if="icon"
       avatar
     ><q-icon :name="icon" />

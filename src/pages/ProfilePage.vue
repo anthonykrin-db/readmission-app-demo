@@ -7,7 +7,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-import {username} from "src/store/auth/getters";
+import {username} from "src/store-vuex/auth/getters";
 
 export default defineComponent({
   name: 'ProfilePage',
