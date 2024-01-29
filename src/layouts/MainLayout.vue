@@ -10,7 +10,7 @@
     </q-header>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-      <admin-nav icon="home" link="home" @click="routeHome" title="Home" />
+      <admin-nav icon="home" link="home" title="Home" />
       <admin-nav icon="person" link="profile" title="My Profile"/>
       <admin-nav icon="settings" link="settings" title="Settings"/>
       <admin-nav icon="tasks" link="tasks" title="Tasks"/>
@@ -29,7 +29,7 @@
       <q-toolbar>
         <admin-nav icon="tasks" link="tasks" title=""/>
         <admin-nav icon="warning" link="alerts" title=""/>
-        <admin-nav icon="home" link="home" @click="routeHome" title="" />
+        <admin-nav icon="home" link="home" title="" />
         <admin-nav icon="resources" link="resources" title=""/>
         <admin-nav icon="calendar_month" link="timeline" title=""/>
       </q-toolbar>
@@ -40,7 +40,6 @@
 <script>
 import { ref } from 'vue'
 import AdminNav from "components/AdminNav.vue";
-import {useRouter} from "vue-router";
 import { useAuthStore } from '../store/authStore'
 const authStore = useAuthStore()
 console.log("DEBUG username/token: "+authStore.debugFooter)
@@ -50,6 +49,7 @@ export default {
   name: 'MainLayout',
   setup() {
     const rightDrawerOpen = ref(false)
+
     return {
       rightDrawerOpen,
       toggleRightDrawer() {
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     routeHome: function () {
-      useRouter().push('/')
+      this.$router.push("/")
     }
   },
   components: {
