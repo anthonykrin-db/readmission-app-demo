@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from "axios";
+import {useQuasar} from "quasar";
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: 'xyz',
