@@ -1,6 +1,5 @@
 # db_utils.py
 import psycopg2
-import hashlib
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from fastapi import Depends
