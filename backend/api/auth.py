@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from api.db_utils import create_connection, md5_hash
+from api.db_utils import create_connection
+from api.misc_utils import md5_hash
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
@@ -21,7 +22,7 @@ async def login(credential:Credential):
         cursor = conn.cursor()
 
         # Check if the user exists in the database
-        cursor.execute("SELECT * FROM user WHERE lower(username) = lower(%s) AND pass_hash = %s", (credential.username, md5_hash(credential.password)))
+        cursor.execute("SELECT * FROM demo.user WHERE lower(username) = lower(%s) AND pass_hash = %s", (credential.username, md5_hash(credential.password)))
         user = cursor.fetchone()
 
         if user:
