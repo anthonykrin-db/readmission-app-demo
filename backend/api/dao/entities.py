@@ -1,10 +1,10 @@
 from sqlalchemy import Column, String, Date, Boolean, JSON, ForeignKey, Integer, PrimaryKeyConstraint
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+#Activity log
 class Activity(Base):
     __tablename__ = 'activity'
     activityid = Column(UUID(as_uuid=True), primary_key=True)
@@ -37,9 +37,9 @@ class User(Base):
     username = Column(String(30), nullable=False)
     # Relationships
     tasks = relationship('Task', backref='user')
-    answers = relationship('Answer', backref='user')
+    responses = relationship('Response', backref='user')
     appointments = relationship('Appointment', backref='user')
-    contacts = relationship('Contacts', backref='user')
+    contacts = relationship('Contact', backref='user')
     medications = relationship('Medication', backref='user')
     schedules = relationship('Schedule', backref='user')
     sessions = relationship('Session', backref='user')
@@ -65,15 +65,12 @@ class Appointment(Base):
     # Relationships
     tasks = relationship('Task', backref='appointment')
 
-class Contacts(Base):
-    __tablename__ = 'contacts'
-
+class Contact(Base):
+    __tablename__ = 'contact'
+    contactid = Column(UUID(as_uuid=True), primary_key=True)
     userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
-    contactid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
-
-    __table_args__ = (
-        PrimaryKeyConstraint('userid', 'contactid'),
-    )
+    contact_extid = Column(String(200))
+    contact_label = Column(String(200))
 
 class Facility(Base):
     __tablename__ = 'facility'
@@ -116,7 +113,7 @@ class Question(Base):
     # Foreign keys
     surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'))
     # Relationships
-    answers = relationship('Answer', backref='question')
+    responses = relationship('Response', backref='question')
 
 class Schedule(Base):
     __tablename__ = 'schedule'
@@ -152,8 +149,8 @@ class Survey(Base):
     data = Column(JSON)
     final_msg = Column(String(200))
 
-class Answer(Base):
-    __tablename__ = 'answer'
+class Response(Base):
+    __tablename__ = 'response'
     userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'), primary_key=True)
     surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'), primary_key=True)
     questionid = Column(UUID(as_uuid=True), ForeignKey('question.questionid'), primary_key=True)
@@ -164,6 +161,7 @@ class Answer(Base):
 class Task(Base):
     __tablename__ = 'task'
     taskid = Column(UUID(as_uuid=True), primary_key=True)
+    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
     type = Column(String(50))
     extid = Column(String(200))
     due_dt = Column(Date)
