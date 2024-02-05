@@ -1,12 +1,15 @@
 
-from fastapi import FastAPI, HTTPException
-from typing import List
+from typing import Optional
 from pydantic import BaseModel
+from datetime import date,datetime
 from uuid import UUID
 from sqlalchemy.orm import Session
+from typing import List
+from fastapi import Depends, HTTPException, APIRouter
 from api.db_utils import get_db
 
-router = APIRouter(prefix="/admin/user", tags=["admin -> users"])
+router = APIRouter( tags=["admin -> users"])
+##app = FastAPI()
 
 class UserBase(BaseModel):
     type: str
@@ -15,7 +18,7 @@ class UserBase(BaseModel):
     last_name: str
     patientid: Optional[str]
     pass_hash: Optional[str]
-    last_login_dt: Optional[datetime.date]
+    last_login_dt: Optional[date]
     contact_information: Optional[str]
     other_information: Optional[str]
     extid: Optional[str]
@@ -37,7 +40,7 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
-@app.post("/create/", response_model=User)
+@router.post("/create/", response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = User(**user.dict())
     db.add(db_user)
@@ -46,7 +49,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.get("/get/{user_id}", response_model=User)
+@router.get("/get/{user_id}", response_model=User)
 def get_user(user_id: UUID, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.userid == user_id).first()
     if db_user is None:
@@ -54,13 +57,13 @@ def get_user(user_id: UUID, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.get("/list/", response_model=List[User])
+@router.get("/list/", response_model=List[User])
 def list_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_users = db.query(User).offset(skip).limit(limit).all()
     return db_users
 
 
-@app.put("/update/{user_id}", response_model=User)
+@router.put("/update/{user_id}", response_model=User)
 def update_user(user_id: UUID, user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.userid == user_id).first()
     if db_user is None:
@@ -71,7 +74,7 @@ def update_user(user_id: UUID, user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.delete("/delete/{user_id}")
+@router.delete("/delete/{user_id}")
 def delete_user(user_id: UUID, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.userid == user_id).first()
     if db_user is None:

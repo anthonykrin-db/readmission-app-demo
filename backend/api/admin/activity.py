@@ -1,17 +1,19 @@
 # activities
 from typing import Optional
 from pydantic import BaseModel
+from datetime import date
 from uuid import UUID
 from sqlalchemy.orm import Session
-from fastapi import Depends, FastAPI, HTTPException
+from typing import List
+from fastapi import Depends, HTTPException, APIRouter
 from api.db_utils import get_db  # Add this function in db_functions.py file
 
-router = APIRouter(prefix="/admin/activity", tags=["admin -> activities"])
-
+router = APIRouter( tags=["admin -> activities"])
+##app = FastAPI()
 
 class ActivityBase(BaseModel):
     type: str
-    occurence_dt: datetime.date
+    occurence_dt: date
     extid: Optional[str]
     label: str
     description: Optional[str]
@@ -26,7 +28,7 @@ class Activity(ActivityBase):
         orm_mode = True
 
 
-@app.post("/create/", response_model=Activity)
+@router.post("/create", response_model=Activity)
 def create_activity(activity: ActivityCreate, db: Session = Depends(get_db)):
     db_activity = Activity(**activity.dict())
     db.add(db_activity)
@@ -35,7 +37,7 @@ def create_activity(activity: ActivityCreate, db: Session = Depends(get_db)):
     return db_activity
 
 
-@app.get("/get/{activity_id}", response_model=Activity)
+@router.get("/get/{activity_id}", response_model=Activity)
 def read_activity(activity_id: UUID, db: Session = Depends(get_db)):
     db_activity = db.query(Activity).filter(Activity.activityid == activity_id).first()
     if db_activity is None:
@@ -43,13 +45,13 @@ def read_activity(activity_id: UUID, db: Session = Depends(get_db)):
     return db_activity
 
 
-@app.get("/list/", response_model=List[Activity])
+@router.get("/list/", response_model=List[Activity])
 def read_activities(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     activities = db.query(Activity).offset(skip).limit(limit).all()
     return activities
 
 
-@app.put("/update/{activity_id}", response_model=Activity)
+@router.put("/update/{activity_id}", response_model=Activity)
 def update_activity(activity_id: UUID, activity: ActivityCreate, db: Session = Depends(get_db)):
     db_activity = db.query(Activity).filter(Activity.activityid == activity_id).first()
     if db_activity is None:
@@ -60,7 +62,7 @@ def update_activity(activity_id: UUID, activity: ActivityCreate, db: Session = D
     return db_activity
 
 
-@app.delete("/delete/{activity_id}")
+@router.delete("/delete/{activity_id}")
 def delete_activity(activity_id: UUID, db: Session = Depends(get_db)):
     db_activity = db.query(Activity).filter(Activity.activityid == activity_id).first()
     if db_activity is None:

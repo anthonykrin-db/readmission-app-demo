@@ -1,26 +1,28 @@
 from typing import Optional
 from pydantic import BaseModel
 from uuid import UUID
+from datetime import date
+from typing import List
 from sqlalchemy.orm import Session
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, HTTPException, APIRouter
 from api.db_utils import get_db  # Add this function in db_functions.py file
 
-router = APIRouter(prefix="/admin/appointment", tags=["admin -> appointment"])
-
+router = APIRouter( tags=["admin -> appointment"])
+##app = FastAPI()
 
 class AppointmentBase(BaseModel):
     userid: UUID
-    start_date: datetime.date
-    end_date: Optional[datetime.date]
+    start_date: date
+    end_date: Optional[date]
     location: Optional[str]
     physician: Optional[str]
     reason: Optional[str]
     reason_es: Optional[str]
     confirmed: bool = False
-    confirmed_dt: Optional[datetime.date]
+    confirmed_dt: Optional[date]
     reschedule_phone: Optional[str]
     cancelled: bool = False
-    cancelled_dt: Optional[datetime.date]
+    cancelled_dt: Optional[date]
     days_reminder: int = 0
 
 class AppointmentCreate(AppointmentBase):
@@ -32,10 +34,10 @@ class Appointment(AppointmentBase):
         orm_mode = True
 
 
-app = FastAPI()
+#app = FastAPI()
 
 
-@app.post("/create/", response_model=Appointment)
+@router.post("/create", response_model=Appointment)
 def create_appointment(appointment: AppointmentCreate, db: Session = Depends(get_db)):
     db_appointment = Appointment(**appointment.dict())
     db.add(db_appointment)
@@ -44,7 +46,7 @@ def create_appointment(appointment: AppointmentCreate, db: Session = Depends(get
     return db_appointment
 
 
-@app.get("/get/{appointment_id}", response_model=Appointment)
+@router.get("/get/{appointment_id}", response_model=Appointment)
 def read_appointment(appointment_id: UUID, db: Session = Depends(get_db)):
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:
@@ -52,13 +54,13 @@ def read_appointment(appointment_id: UUID, db: Session = Depends(get_db)):
     return db_appointment
 
 
-@app.get("/list/", response_model=List[Appointment])
+@router.get("/list/", response_model=List[Appointment])
 def read_appointments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     appointments = db.query(Appointment).offset(skip).limit(limit).all()
     return appointments
 
 
-@app.put("/update/{appointment_id}", response_model=Appointment)
+@router.put("/update/{appointment_id}", response_model=Appointment)
 def update_appointment(appointment_id: UUID, appointment: AppointmentCreate, db: Session = Depends(get_db)):
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:
@@ -69,7 +71,7 @@ def update_appointment(appointment_id: UUID, appointment: AppointmentCreate, db:
     return db_appointment
 
 
-@app.delete("/delete/{appointment_id}")
+@router.delete("/delete/{appointment_id}")
 def delete_appointment(appointment_id: UUID, db: Session = Depends(get_db)):
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:

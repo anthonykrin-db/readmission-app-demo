@@ -2,18 +2,21 @@
 
 from typing import Optional
 from pydantic import BaseModel
-from uuid import UUID
 from sqlalchemy.orm import Session
-from fastapi import Depends, FastAPI, HTTPException
+from datetime import date
+from uuid import UUID
+from typing import List
+from sqlalchemy.orm import Session
+from fastapi import Depends, HTTPException, APIRouter
 from api.db_utils import get_db  # Add this function in db_functions.py file
 
-router = APIRouter(prefix="/admin/medication", tags=["admin -> medication"])
+router = APIRouter(tags=["admin -> medication"])
 
 
 class MedicationBase(BaseModel):
     userid: UUID
-    from_dt: Optional[datetime.date]
-    until_dt: Optional[datetime.date]
+    from_dt: Optional[date]
+    until_dt: Optional[date]
     label: Optional[str]
     prescription: str
     take_dow_mask: Optional[str]
@@ -29,11 +32,7 @@ class Medication(MedicationBase):
     class Config:
         orm_mode = True
 
-
-app = FastAPI()
-
-
-@app.post("/medications/", response_model=Medication)
+@router.post("/create", response_model=Medication)
 def create_medication(medication: MedicationCreate, db: Session = Depends(get_db)):
     db_medication = Medication(**medication.dict())
     db.add(db_medication)
@@ -42,7 +41,7 @@ def create_medication(medication: MedicationCreate, db: Session = Depends(get_db
     return db_medication
 
 
-@app.get("/medications/{medication_id}", response_model=Medication)
+@router.get("/get/{medication_id}", response_model=Medication)
 def read_medication(medication_id: UUID, db: Session = Depends(get_db)):
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:
@@ -50,13 +49,13 @@ def read_medication(medication_id: UUID, db: Session = Depends(get_db)):
     return db_medication
 
 
-@app.get("/medications/", response_model=List[Medication])
+@router.get("/list", response_model=List[Medication])
 def read_medications(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     medications = db.query(Medication).offset(skip).limit(limit).all()
     return medications
 
 
-@app.put("/medications/{medication_id}", response_model=Medication)
+@router.put("/update/{medication_id}", response_model=Medication)
 def update_medication(medication_id: UUID, medication: MedicationCreate, db: Session = Depends(get_db)):
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:
@@ -67,7 +66,7 @@ def update_medication(medication_id: UUID, medication: MedicationCreate, db: Ses
     return db_medication
 
 
-@app.delete("/medications/{medication_id}")
+@router.delete("/delete/{medication_id}")
 def delete_medication(medication_id: UUID, db: Session = Depends(get_db)):
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:

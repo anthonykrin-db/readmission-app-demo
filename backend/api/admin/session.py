@@ -1,6 +1,7 @@
 # session
 from fastapi import APIRouter, Depends
 from api.db_utils import get_db
+from datetime import date
 from api.misc_utils import md5_hash,generate_guid
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
@@ -13,4 +14,6 @@ from api.dao.entities import Activity
 # Admin only crud.  This should not be public facing
 ######################################################
 
-router = APIRouter(prefix="/admin/session", tags=["admin -> session"])
+router = APIRouter( tags=["admin -> session"])
+#app = FastAPI()
+
