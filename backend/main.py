@@ -20,10 +20,13 @@ from api.admin.user import router as api_admin_user
 
 
 app = FastAPI()
+# End user facing
 app.include_router(api_health, prefix='/api/monitor', tags=["utils -> healthcheck"])
 app.include_router(api_auth, prefix='/api/auth', tags=["main -> auth"])
 app.include_router(api_survey, prefix='/api/survey', tags=["main -> survey"])
 
+
+# Admin facing
 app.include_router(api_admin_activity, prefix='/api/admin/activity')
 app.include_router(api_admin_appointment, prefix='/api/admin/appointment')
 app.include_router(api_admin_contact, prefix='/api/admin/contact')
