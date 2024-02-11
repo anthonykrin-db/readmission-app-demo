@@ -7,7 +7,7 @@ console.log("Username: "+authStore.username)
 <template>
   <q-page class="flex flex-center">
 
-    <div v-if="authStore.username === 'Guest'">
+    <div v-if="authStore.username === 'Guest' || authStore.username === ''">
       <!-- if true, render a link to login page -->
       <p>Welcome, {{authStore.username}}</p>
       Please <router-link to="/login">Login</router-link>
