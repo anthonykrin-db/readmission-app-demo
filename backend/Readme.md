@@ -19,4 +19,7 @@
 4. find swagger docs here:
 
    [http://127.0.0.1:8080/docs](https://www.chefmaezaki.com/)
+5. set schema for username
+
+  `ALTER ROLE postgres IN DATABASE readmission SET search_path TO demo;`
 

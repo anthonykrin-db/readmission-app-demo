@@ -16,7 +16,9 @@ from api.admin.schedule import router as api_admin_schedule
 from api.admin.session import router as api_admin_session
 from api.admin.survey import router as api_admin_survey
 from api.admin.task import router as api_admin_task
-from api.admin.user import router as api_admin_user
+from api.admin.users import router as api_admin_user
+from api.testing.demo_data import router as api_testing_demo_data
+
 
 
 app = FastAPI()
@@ -39,6 +41,9 @@ app.include_router(api_admin_session, prefix='/api/admin/session')
 app.include_router(api_admin_survey, prefix='/api/admin/survey')
 app.include_router(api_admin_task, prefix='/api/admin/task')
 app.include_router(api_admin_user, prefix='/api/admin/user')
+
+# Testing
+app.include_router(api_testing_demo_data, prefix='/api/testing/data')
 
 
 @app.get("/")

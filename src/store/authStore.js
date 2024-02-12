@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('auth', {
             }
           })
           .catch(error => {
-            console.error('REST authenticate error:', error);
+            console.log('REST authenticate error:', error);
             reject(error);
           });
       });
@@ -52,7 +52,7 @@ export const useAuthStore = defineStore('auth', {
             resolve(true); // Login successful
           })
           .catch(error => {
-            console.error('Logout failed:', error);
+            console.log('REST logout failed:', error);
             reject(error);
           });
       });
