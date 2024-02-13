@@ -5,7 +5,7 @@ from datetime import date
 from api.dao.entities import Session  # assuming Session model is in app.models module
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
-
+from sqlalchemy import Date
 from sqlalchemy.orm import Session
 
 from api.db_utils import get_engine  # Add this function in db_functions.py file
@@ -15,8 +15,8 @@ router = APIRouter(tags=["admin -> session"])
 
 class SessionBase(BaseModel):
   userid: UUID
-  login_dt: Optional[date]
-  exp_dt: Optional[date]
+  login_dt: Optional[Date]
+  exp_dt: Optional[Date]
 
 
 class SessionCreate(SessionBase):
