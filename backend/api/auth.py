@@ -28,13 +28,11 @@ async def login(credential: Credential):
                    (credential.username, md5_hash(credential.password)))
     user = cursor.fetchone()
 
-    if user:
+    if user and user.username == credential.username:
       # If the user exists, you can return a token or other authentication mechanism
       # For simplicity, returning a success message here
       return JSONResponse(content={'message': 'Login successful'}, status_code=200)
-
     return JSONResponse(content={'error': 'Invalid username or password'}, status_code=401)
-
   except Exception as e:
     return JSONResponse(content={'error': str(e)}, status_code=500)
 
