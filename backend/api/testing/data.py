@@ -229,14 +229,13 @@ class DemoData:
       for data in user_data:
         user = UserBase(**data)
         self.users.append(user)
-        db_user = Users(**user.dict())
         try:
-          existing_user = get_user(db_user.userid)
-          print("Found user, updating {}".format(db_user.userid))
-          update_user(db_user.userid, db_user)
+          existing_user = get_user(user.userid)
+          print("Found user, updating {}".format(user.userid))
+          update_user(user.userid, user)
         except Exception as e:
-          print("User not found, creating {}".format(db_user.userid))
-          create_user(db_user)
+          print("User not found, creating {}".format(user.userid))
+          create_user(user)
 
   def print_users(self):
     for user in self.users:

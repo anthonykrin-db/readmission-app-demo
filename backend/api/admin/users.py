@@ -2,12 +2,11 @@ from datetime import date
 from typing import List
 from typing import Optional
 from uuid import UUID
-
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
 from api.db_utils import get_engine
+from api.dao.entities import Users
 
 router = APIRouter(tags=["admin -> users"])
 
@@ -45,9 +44,9 @@ class User(UserBase):
 
 
 @router.post("/create/", response_model=User)
-def create_user(user: UserCreate):
+def create_user(user: UserBase):
   with Session(get_engine()) as db:
-    db_user = User(**user.dict())
+    db_user = Users(**user.dict())
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -57,7 +56,7 @@ def create_user(user: UserCreate):
 @router.get("/get/{user_id}", response_model=User)
 def get_user(user_id: UUID):
   with Session(get_engine()) as db:
-    db_user = db.query(User).filter(User.userid == user_id).first()
+    db_user = db.query(Users).filter(Users.userid == user_id).first()
     if db_user is None:
       raise HTTPException(status_code=404, detail="User not found")
     return db_user
@@ -66,14 +65,14 @@ def get_user(user_id: UUID):
 @router.get("/list/", response_model=List[User])
 def list_users(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
-    db_users = db.query(User).offset(skip).limit(limit).all()
+    db_users = db.query(Users).offset(skip).limit(limit).all()
     return db_users
 
 
 @router.put("/update/{user_id}", response_model=User)
 def update_user(user_id: UUID, user: UserCreate):
   with Session(get_engine()) as db:
-    db_user = db.query(User).filter(User.userid == user_id).first()
+    db_user = db.query(Users).filter(Users.userid == user_id).first()
     if db_user is None:
       raise HTTPException(status_code=404, detail="User not found")
     for k, v in user.dict().items():
@@ -85,7 +84,7 @@ def update_user(user_id: UUID, user: UserCreate):
 @router.delete("/delete/{user_id}")
 def delete_user(user_id: UUID):
   with Session(get_engine()) as db:
-    db_user = db.query(User).filter(User.userid == user_id).first()
+    db_user = db.query(Users).filter(Users.userid == user_id).first()
     if db_user is None:
       raise HTTPException(status_code=404, detail="User not found")
     db.delete(db_user)
