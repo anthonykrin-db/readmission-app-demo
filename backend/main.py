@@ -40,7 +40,7 @@ app.include_router(api_admin_schedule, prefix='/api/admin/schedule')
 app.include_router(api_admin_session, prefix='/api/admin/session')
 app.include_router(api_admin_survey, prefix='/api/admin/survey')
 app.include_router(api_admin_task, prefix='/api/admin/task')
-app.include_router(api_admin_user, prefix='/api/admin/user')
+app.include_router(api_admin_user, prefix='/api/admin/users')
 
 # Testing
 app.include_router(api_testing_demo_data, prefix='/api/testing/data')

@@ -1,8 +1,8 @@
 # question
 from typing import List, Optional
 from uuid import UUID
-
-from app.models import Question  # assuming that Question model is defined in app.models module
+from datetime import date
+from api.dao.entities import Question  # assuming that Question model is defined in app.models module
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session

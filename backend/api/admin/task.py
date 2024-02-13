@@ -1,11 +1,11 @@
 # task
 from typing import List, Optional
 from uuid import UUID
-
-from app.models import Task  # Assuming that Task model is in app.models module
+from datetime import date
+from api.dao.entities import Task  # Assuming that Task model is in app.models module
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
-from sqlalchemy import Date
+
 from sqlalchemy.orm import Session
 
 from api.db_utils import get_engine  # Add this function in db_functions.py file
@@ -17,10 +17,10 @@ class TaskBase(BaseModel):
   userid: UUID
   type: Optional[str]
   extid: Optional[str]
-  due_dt: Optional[Date]
-  completed_dt: Optional[Date]
+  due_dt: Optional[date]
+  completed_dt: Optional[date]
   status: Optional[str]
-  created_dt: Optional[Date]
+  created_dt: Optional[date]
   data: Optional[dict]
   surveyid: Optional[UUID]
   appointmentid: Optional[UUID]

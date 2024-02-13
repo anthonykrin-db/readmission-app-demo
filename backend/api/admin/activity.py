@@ -1,9 +1,8 @@
 # activities
 from datetime import date
-from typing import List
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
-
+from datetime import date
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
