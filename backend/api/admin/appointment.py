@@ -14,6 +14,7 @@ router = APIRouter(tags=["admin -> appointment"])
 ##app = FastAPI()
 
 class AppointmentBase(BaseModel):
+  appointmentid: UUID
   userid: UUID
   start_date: date
   end_date: Optional[date]

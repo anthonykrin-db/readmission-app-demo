@@ -1,10 +1,10 @@
 # schedule
 from typing import List, Optional
 from uuid import UUID
+from datetime import date
 from api.dao.entities import Schedule  # assuming Schedule model is in app.models module
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
-from sqlalchemy import Date
 from sqlalchemy.orm import Session
 
 from api.db_utils import get_engine  # Add this function in db_functions.py file
@@ -13,13 +13,14 @@ router = APIRouter(tags=["admin -> schedule"])
 
 
 class ScheduleBase(BaseModel):
-  label: Optional[str]
+  scheduleid: UUID
+  label: str
+  type: str
   userid: UUID
   dow_mask: Optional[str]
-  start_dt: Optional[Date]
-  end_dt: Optional[Date]
+  start_dt: Optional[date]
+  end_dt: Optional[date]
   repeats: Optional[bool]
-  type: Optional[str]
   data: Optional[dict]
 
 

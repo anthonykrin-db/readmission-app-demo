@@ -13,6 +13,7 @@ router = APIRouter(tags=["admin -> question"])
 
 
 class QuestionBase(BaseModel):
+  questionid: UUID
   surveyid: UUID
   type: str
   question: str

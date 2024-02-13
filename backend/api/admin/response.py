@@ -13,6 +13,7 @@ router = APIRouter(tags=["admin -> response"])
 
 
 class ResponseBase(BaseModel):
+  responseid: UUID
   userid: UUID
   surveyid: UUID
   questionid: UUID

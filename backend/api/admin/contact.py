@@ -12,6 +12,7 @@ router = APIRouter(tags=["admin -> contact"])
 
 
 class ContactBase(BaseModel):
+  contactid: UUID
   userid: UUID
   contact_extid: Optional[str]
   contact_label: Optional[str]

@@ -14,6 +14,7 @@ router = APIRouter(tags=["admin -> medication"])
 
 
 class MedicationBase(BaseModel):
+  medicationid: UUID
   userid: UUID
   from_dt: Optional[date]
   until_dt: Optional[date]

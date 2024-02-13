@@ -15,6 +15,7 @@ router = APIRouter(tags=["admin -> facility"])
 ##app = FastAPI()
 
 class FacilityBase(BaseModel):
+  facilityid: UUID
   facility: Optional[str]
   address: Optional[str]
   type: Optional[str]

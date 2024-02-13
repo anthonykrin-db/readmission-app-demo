@@ -15,6 +15,7 @@ router = APIRouter(tags=["admin -> activities"])
 ##app = FastAPI()
 
 class ActivityBase(BaseModel):
+  activityid: UUID
   type: str
   occurence_dt: date
   extid: Optional[str]

@@ -14,9 +14,10 @@ router = APIRouter(tags=["admin -> survey"])
 
 
 class SurveyBase(BaseModel):
+  surveyid: UUID
   title: str
   description: Optional[str]
-  created_dt: Optional[Date]
+  created_dt: Optional[date]
   data: Optional[dict]
   final_msg: Optional[str]
 
