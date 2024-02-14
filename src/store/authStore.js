@@ -1,11 +1,11 @@
-import {defineStore} from 'pinia'
-import axios from "axios";
-import {useQuasar} from "quasar";
+import {defineStore} from 'pinia';
+//import {axios} from "../store/axiosClient";
+import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isAuthenticated: false,
-    username: '',
+    username: 'Guest',
     token: '',
     profile: {}
   }),
@@ -20,11 +20,12 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     login(credentials) {
       return new Promise((resolve, reject) => {
-        axios.post('api/auth/authenticate', credentials)
+        axios.post('api/auth/login', credentials)
           .then(response => {
             const tkn = response.data.token;
+            const msg = response.data.message;
             if (tkn) {
-              console.log("REST authenticate: Got token")
+              console.log("REST authenticate: Got token: "+tkn+", msg: "+msg)
               this.token = tkn;
               this.username = credentials.username;
               this.isAuthenticated = true;
@@ -56,18 +57,6 @@ export const useAuthStore = defineStore('auth', {
             reject(error);
           });
       });
-    },
-    usernameExists(userName) {
-      return axios.get('api/auth/username-exists/' + userName)
-    },
-    updateProfile(profile) {
-      context.dispatch('checkLogin')
-      this.profile = profile
-      return axios.put('api/auth/profile', profile, context.getters.axiosAuthHeader)
-    },
-    getProfile() {
-      context.dispatch('checkLogin')
-      return axios.get('api/auth/profile', context.getters.axiosAuthHeader)
     }
   }
 })

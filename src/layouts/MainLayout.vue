@@ -1,3 +1,36 @@
+
+<script>
+import { ref } from 'vue'
+import AdminNav from "components/AdminNav.vue";
+import { useAuthStore } from '../store/authStore'
+
+export default {
+
+  name: 'MainLayout',
+  setup() {
+    const authStore = useAuthStore()
+    const rightDrawerOpen = ref(false)
+
+    return {
+      authStore,
+      rightDrawerOpen,
+      toggleRightDrawer() {
+        rightDrawerOpen.value = !rightDrawerOpen.value
+      }
+    }
+  },
+  methods: {
+    routeHome: function () {
+      this.$router.push("/")
+    }
+  },
+  components: {
+    AdminNav
+  }
+}
+</script>
+
+
 <template>
   <q-layout view="hHr lpR fFr">
     <q-header class="bg-primary text-white" height-hint="98">
@@ -33,37 +66,7 @@
         <admin-nav icon="resources" link="resources" title=""/>
         <admin-nav icon="calendar_month" link="timeline" title=""/>
       </q-toolbar>
+      <q-input v-model="authStore.debugFooter" />
     </q-footer>
   </q-layout>
 </template>
-
-<script>
-import { ref } from 'vue'
-import AdminNav from "components/AdminNav.vue";
-import { useAuthStore } from '../store/authStore'
-const authStore = useAuthStore()
-console.log("DEBUG username/token: "+authStore.debugFooter)
-
-export default {
-
-  name: 'MainLayout',
-  setup() {
-    const rightDrawerOpen = ref(false)
-
-    return {
-      rightDrawerOpen,
-      toggleRightDrawer() {
-        rightDrawerOpen.value = !rightDrawerOpen.value
-      }
-    }
-  },
-  methods: {
-    routeHome: function () {
-      this.$router.push("/")
-    }
-  },
-  components: {
-    AdminNav
-  }
-}
-</script>

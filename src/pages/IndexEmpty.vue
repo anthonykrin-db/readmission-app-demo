@@ -1,8 +1,4 @@
-<template>
-  <div>
-    <h1>Hello Empty</h1>
-  </div>
-</template>
+
 
 <script>
 export default {
@@ -16,3 +12,8 @@ h1 {
   color: blue;
 }
 </style>
+<template>
+  <div>
+    <h1>Hello Empty</h1>
+  </div>
+</template>

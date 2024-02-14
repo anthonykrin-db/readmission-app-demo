@@ -17,7 +17,7 @@ const resetLoginStatus = () => {
 };
 
 const login = async () => {
-  resetLoginStatus();
+  //console.log("Username: "+userCredentials.username+", password: "+userCredentials.password)
   authStore.login(userCredentials).then((result) => {
     if (result) {
       console.log('Login was successful');
@@ -90,7 +90,7 @@ const logout = async () => {
   border-radius: 8px;" color="dark" rounded size="md" label="Logout" no-caps class="full-width" @click="logout"></q-btn>
         </div>
       </q-card-section>
-
     </q-card>
+
   </q-page>
 </template>

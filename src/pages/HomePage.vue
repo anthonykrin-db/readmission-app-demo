@@ -17,6 +17,5 @@ console.log("Username: "+authStore.username)
       <p>Welcome, {{authStore.username}}</p>
       You have been authenticated
     </div>
-
   </q-page>
 </template>

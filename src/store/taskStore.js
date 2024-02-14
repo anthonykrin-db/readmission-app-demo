@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import axios from "axios";
+import { defineStore } from 'pinia';
+import {axios_client} from '../store/axiosClient';
 export const useAuthStore = defineStore('tasks', {
   state: () => ({
     tasks: {}
@@ -36,14 +36,14 @@ export const useAuthStore = defineStore('tasks', {
     //provided for testing, this would not be appropriate for production
     addTask(context,task){
       this.tasks.push(task)
-      return axios.post('api/tasks/add', task)
+      return axios_client.post('api/tasks/add', task)
     },
     updateTask (context, task) {
       this.tasks[task.taskId]=task
-      return axios.post('api/tasks/update', task)
+      return axios_client.post('api/tasks/update', task)
     },
     getTasks (context) {
-      return axios.get('api/tasks/list')
+      return axios_client.get('api/tasks/list')
     }
   }
 })
