@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 from sqlalchemy.orm import Session
 
-from api.db_utils import get_engine  # Add this function in db_functions.py file
+from api.utils.db_utils import get_engine  # Add this function in db_functions.py file
 
 router = APIRouter(tags=["admin -> survey"])
 

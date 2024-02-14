@@ -18,10 +18,24 @@ from api.admin.survey import router as api_admin_survey
 from api.admin.task import router as api_admin_task
 from api.admin.users import router as api_admin_user
 from api.testing.demo_data import router as api_testing_demo_data
-
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:9000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # End user facing
 app.include_router(api_health, prefix='/api/monitor', tags=["utils -> healthcheck"])
 app.include_router(api_auth, prefix='/api/auth', tags=["main -> auth"])

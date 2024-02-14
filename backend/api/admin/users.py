@@ -5,7 +5,7 @@ from uuid import UUID
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from api.db_utils import get_engine
+from api.utils.db_utils import get_engine
 from api.dao.entities import Users
 
 router = APIRouter(tags=["admin -> users"])
@@ -54,7 +54,7 @@ def create_user(user: UserBase):
 
 
 @router.get("/get/{user_id}", response_model=User)
-def get_user(user_id: UUID):
+def get_user(user_id: str):
   with Session(get_engine()) as db:
     db_user = db.query(Users).filter(Users.userid == user_id).first()
     if db_user is None:
@@ -70,7 +70,7 @@ def list_users(skip: int = 0, limit: int = 100):
 
 
 @router.put("/update/{user_id}", response_model=User)
-def update_user(user_id: UUID, user: UserCreate):
+def update_user(user_id: UUID, user: UserBase):
   with Session(get_engine()) as db:
     db_user = db.query(Users).filter(Users.userid == user_id).first()
     if db_user is None:
@@ -82,7 +82,7 @@ def update_user(user_id: UUID, user: UserCreate):
 
 
 @router.delete("/delete/{user_id}")
-def delete_user(user_id: UUID):
+def delete_user(user_id: str):
   with Session(get_engine()) as db:
     db_user = db.query(Users).filter(Users.userid == user_id).first()
     if db_user is None:

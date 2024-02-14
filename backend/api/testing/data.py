@@ -1,11 +1,7 @@
 import hashlib
 
-from sqlalchemy.orm import Session
-
 from api.admin.users import UserBase
-from api.admin.users import list_users, create_user, update_user, get_user
-from api.dao.entities import Users
-from api.db_utils import get_engine
+from api.admin.users import create_user, update_user, get_user
 
 
 # Some UUIDs
@@ -219,23 +215,16 @@ class DemoData:
       }
     ]
 
-    with Session(get_engine()) as db:
-      # delete user data
-      # users = list_users()
-      # print("Found users:")
-      # for user in users:
-      #   print(user.first_name)
-
-      for data in user_data:
-        user = UserBase(**data)
-        self.users.append(user)
-        try:
-          existing_user = get_user(user.userid)
-          print("Found user, updating {}".format(user.userid))
-          update_user(user.userid, user)
-        except Exception as e:
-          print("User not found, creating {}".format(user.userid))
-          create_user(user)
+    for data in user_data:
+      user = UserBase(**data)
+      self.users.append(user)
+      try:
+        existing_user = get_user(user.userid)
+        print("Found user, updating {}".format(user.userid))
+        update_user(user.userid, user)
+      except Exception as e:
+        print("User not found, creating {}".format(user.userid))
+        create_user(user)
 
   def print_users(self):
     for user in self.users:
