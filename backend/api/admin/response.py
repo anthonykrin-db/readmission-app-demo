@@ -42,7 +42,7 @@ def create_response(response: ResponseCreate):
 
 
 @router.get("/get/{response_id}", response_model=ResponseInDB)
-def read_response(response_id: UUID):
+def get_response(response_id: UUID):
   with Session(get_engine()) as db:
     db_response = db.query(Response).get(response_id)
     if db_response is None:
@@ -52,7 +52,7 @@ def read_response(response_id: UUID):
 
 
 @router.get("/list", response_model=List[ResponseInDB])
-def read_responses(skip: int = 0, limit: int = 100):
+def list_responses(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     responses = db.query(Response).offset(skip).limit(limit).all()
     return responses

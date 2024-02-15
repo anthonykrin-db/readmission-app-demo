@@ -1,10 +1,12 @@
 # facility
 
 from typing import List, Optional
-from uuid import UUID
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from api.utils.db_utils import get_engine
+from api.dao.entities import Facility
+
 
 from api.utils.db_utils import get_engine  # Add this function in db_functions.py file
 
@@ -14,7 +16,7 @@ router = APIRouter(tags=["admin -> facility"])
 ##app = FastAPI()
 
 class FacilityBase(BaseModel):
-  facilityid: UUID
+  facilityid: str
   facility: Optional[str]
   address: Optional[str]
   type: Optional[str]
@@ -27,7 +29,7 @@ class FacilityCreate(FacilityBase):
 
 
 class Facility(FacilityBase):
-  facilityid: UUID
+  facilityid: str
 
   class Config:
     orm_mode = True
@@ -37,7 +39,7 @@ class Facility(FacilityBase):
 
 
 @router.post("/create/", response_model=Facility)
-def create_facility(facility: FacilityCreate):
+def create_facility(facility: FacilityBase):
   with Session(get_engine()) as db:
     db_facility = Facility(**facility.dict())
     db.add(db_facility)
@@ -47,7 +49,7 @@ def create_facility(facility: FacilityCreate):
 
 
 @router.get("/get/{facility_id}", response_model=Facility)
-def read_facility(facility_id: UUID):
+def get_facility(facility_id: str):
   with Session(get_engine()) as db:
     db_facility = db.query(Facility).filter(Facility.facilityid == facility_id).first()
     if db_facility is None:
@@ -56,14 +58,14 @@ def read_facility(facility_id: UUID):
 
 
 @router.get("/list/", response_model=List[Facility])
-def read_facilities(skip: int = 0, limit: int = 100):
+def list_facilities(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     facilities = db.query(Facility).offset(skip).limit(limit).all()
     return facilities
 
 
 @router.put("/update/{facility_id}", response_model=Facility)
-def update_facility(facility_id: UUID, facility: FacilityCreate):
+def update_facility(facility_id: str, facility: FacilityCreate):
   with Session(get_engine()) as db:
     db_facility = db.query(Facility).filter(Facility.facilityid == facility_id).first()
     if db_facility is None:
@@ -75,7 +77,7 @@ def update_facility(facility_id: UUID, facility: FacilityCreate):
 
 
 @router.delete("/delete/{facility_id}")
-def delete_facility(facility_id: UUID):
+def delete_facility(facility_id: str):
   with Session(get_engine()) as db:
     db_facility = db.query(Facility).filter(Facility.facilityid == facility_id).first()
     if db_facility is None:

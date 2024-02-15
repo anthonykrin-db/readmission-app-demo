@@ -47,7 +47,7 @@ def create_question(question: QuestionCreate):
 
 
 @router.get("/get/{question_id}", response_model=QuestionInDB)
-def read_question(question_id: UUID):
+def get_question(question_id: UUID):
   with Session(get_engine()) as db:
     db_question = db.query(Question).get(question_id)
     if db_question is None:
@@ -57,7 +57,7 @@ def read_question(question_id: UUID):
 
 
 @router.get("/list", response_model=List[QuestionInDB])
-def read_questions(skip: int = 0, limit: int = 100):
+def list_questions(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     questions = db.query(Question).offset(skip).limit(limit).all()
     return questions

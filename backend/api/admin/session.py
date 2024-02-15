@@ -42,7 +42,7 @@ def create_session(session: SessionCreate):
 
 
 @router.get("/get/{session_id}", response_model=SessionInDB)
-def read_session(session_id: UUID):
+def get_session(session_id: UUID):
   with Session(get_engine()) as db:
     db_session = db.query(Session).get(session_id)
     if db_session is None:
@@ -52,7 +52,7 @@ def read_session(session_id: UUID):
 
 
 @router.get("/list", response_model=List[SessionInDB])
-def read_sessions(skip: int = 0, limit: int = 100):
+def list_sessions(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     sessions = db.query(Session).offset(skip).limit(limit).all()
     return sessions

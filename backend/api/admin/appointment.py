@@ -54,7 +54,7 @@ def create_appointment(appointment: AppointmentCreate):
 
 
 @router.get("/get/{appointment_id}", response_model=Appointment)
-def read_appointment(appointment_id: UUID):
+def get_appointment(appointment_id: UUID):
   with Session(get_engine()) as db:
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:
@@ -63,7 +63,7 @@ def read_appointment(appointment_id: UUID):
 
 
 @router.get("/list/", response_model=List[Appointment])
-def read_appointments(skip: int = 0, limit: int = 100):
+def list_appointments(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     appointments = db.query(Appointment).offset(skip).limit(limit).all()
     return appointments

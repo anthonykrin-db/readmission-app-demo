@@ -51,7 +51,7 @@ def create_task(task: TaskCreate):
 
 
 @router.get("/get/{task_id}", response_model=TaskInDB)
-def read_task(task_id: UUID):
+def get_task(task_id: UUID):
   with Session(get_engine()) as db:
     db_task = db.query(Task).get(task_id)
     if db_task is None:
@@ -61,7 +61,7 @@ def read_task(task_id: UUID):
 
 
 @router.get("/list", response_model=List[TaskInDB])
-def read_tasks(skip: int = 0, limit: int = 100):
+def list_tasks(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     tasks = db.query(Task).offset(skip).limit(limit).all()
     return tasks

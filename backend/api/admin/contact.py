@@ -39,7 +39,7 @@ def create_contact(contact: ContactCreate):
 
 
 @router.get("/get/{contact_id}", response_model=Contact)
-def read_contact(contact_id: UUID):
+def get_contact(contact_id: UUID):
   with Session(get_engine()) as db:
     db_contact = db.query(Contact).filter(Contact.contactid == contact_id).first()
     if db_contact is None:
@@ -48,7 +48,7 @@ def read_contact(contact_id: UUID):
 
 
 @router.get("/list/", response_model=List[Contact])
-def read_contacts(skip: int = 0, limit: int = 100):
+def list_contacts(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     contacts = db.query(Contact).offset(skip).limit(limit).all()
     return contacts

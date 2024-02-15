@@ -45,7 +45,7 @@ def create_activity(activity: ActivityCreate):
 
 
 @router.get("/get/{activity_id}", response_model=Activity)
-def read_activity(activity_id: UUID):
+def get_activity(activity_id: UUID):
   with Session(get_engine()) as db:
     db_activity = db.query(Activity).filter(Activity.activityid == activity_id).first()
     if db_activity is None:
@@ -54,7 +54,7 @@ def read_activity(activity_id: UUID):
 
 
 @router.get("/list/", response_model=List[Activity])
-def read_activities(skip: int = 0, limit: int = 100):
+def list_activities(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     activities = db.query(Activity).offset(skip).limit(limit).all()
     return activities

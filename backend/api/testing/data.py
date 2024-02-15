@@ -1,5 +1,9 @@
 import hashlib
 
+from api.admin.facility import FacilityBase
+from api.admin.facility import create_facility, update_facility, get_facility
+from api.admin.medication import MedicationBase
+from api.admin.medication import create_medication, update_medication, get_medication
 from api.admin.users import UserBase
 from api.admin.users import create_user, update_user, get_user
 
@@ -110,6 +114,129 @@ from api.admin.users import create_user, update_user, get_user
 class DemoData:
   def __init__(self):
     self.users = []
+    self.facilities = []
+    self.medications = []
+    self.activities = []
+    self.contacts = []
+    self.questions = []
+    self.responses = []
+    self.tasks = []
+    self.appointments = []
+
+    def create_medications(self):
+
+      medications_data = [
+        {
+          "medicationid": "3c5ae13e-758b-4a92-ae25-65bc9301f450",
+          "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+          "from_dt": "2024-01-01",
+          "until_dt": "2024-01-31",
+          "label": "Aspirin",
+          "prescription": "Take one tablet daily with food.",
+          "take_dow_mask": None,
+          "dosage_info": "325 mg",
+          "usage_info": "For pain relief and reducing fever.",
+          "warnings_info": "Do not take if allergic to aspirin."
+        },
+        {
+          "medicationid": "4f996543-892d-40a2-bb7e-5db402ff828c",
+          "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+          "from_dt": "2024-02-01",
+          "until_dt": "2024-02-28",
+          "label": "Lisinopril",
+          "prescription": "Take one tablet daily in the morning.",
+          "take_dow_mask": None,
+          "dosage_info": "10 mg",
+          "usage_info": "For controlling blood pressure.",
+          "warnings_info": "May cause dizziness. Avoid alcohol."
+        },
+        {
+          "medicationid": "fc28cb05-36d5-4b16-a127-86b3d94c79b1",
+          "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+          "from_dt": "2024-01-15",
+          "until_dt": "2024-03-15",
+          "label": "Omeprazole",
+          "prescription": "Take one capsule daily before breakfast.",
+          "take_dow_mask": None,
+          "dosage_info": "20 mg",
+          "usage_info": "For treating acid reflux and heartburn.",
+          "warnings_info": "Do not crush or chew capsules."
+        },
+        {
+          "medicationid": "824f02a1-9c5c-4746-a7f3-ef3398239ef7",
+          "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+          "from_dt": "2024-02-01",
+          "until_dt": "2024-02-28",
+          "label": "Simvastatin",
+          "prescription": "Take one tablet daily at bedtime.",
+          "take_dow_mask": None,
+          "dosage_info": "20 mg",
+          "usage_info": "For lowering cholesterol levels.",
+          "warnings_info": "Avoid grapefruit juice while taking this medication."
+        },
+        {
+          "medicationid": "cd29bb35-f27e-46f7-9d61-90e0e11b06b3",
+          "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
+          "from_dt": "2024-01-01",
+          "until_dt": "2024-01-31",
+          "label": "Ibuprofen",
+          "prescription": "Take one tablet every 4-6 hours as needed for pain.",
+          "take_dow_mask": None,
+          "dosage_info": "200 mg",
+          "usage_info": "For relief of minor aches and pains.",
+          "warnings_info": "Do not exceed recommended dosage."
+        }
+      ]
+
+      for data in medications_data:
+        medication = MedicationBase(**data)
+        self.medications.append(medication)
+        try:
+          existing_medication = get_medication(medication.medicationid)
+          print("Found medication, updating {}".format(medication.medicationid))
+          update_medication(medication.medicationid, medication)
+        except Exception as e:
+          print("User not found, creating {}".format(medication.medicationid))
+          create_medication(medication)
+
+  def create_facilities(self):
+    facilities_data = [
+      {
+        "facilityid": "eac2bc3f-0ae5-45a4-bdcd-829a69dc9e68",
+        "facility": "City General Hospital",
+        "address": "123 Main Street, Cityville, USA",
+        "type": "Hospital",
+        "logo_url": "https://example.com/logo1.png",
+        "photo_url": "https://example.com/photo1.png"
+      },
+      {
+        "facilityid": "2b4c659d-78d6-4389-9b53-4d446b932f18",
+        "facility": "Suburban Medical Center",
+        "address": "456 Oak Avenue, Suburbia, USA",
+        "type": "Medical Center",
+        "logo_url": "https://example.com/logo2.png",
+        "photo_url": "https://example.com/photo2.png"
+      },
+      {
+        "facilityid": "a1fdce5a-8997-4ff0-ae7a-1875fd2c3614",
+        "facility": "Rural Clinic",
+        "address": "789 Elm Street, Countryside, USA",
+        "type": "Clinic",
+        "logo_url": "https://example.com/logo3.png",
+        "photo_url": "https://example.com/photo3.png"
+      }
+    ]
+
+    for data in facilities_data:
+      facility = FacilityBase(**data)
+      self.facilities.append(facility)
+      try:
+        existing_facility = get_facility(facility.facilityid)
+        print("Found facility, updating {}".format(facility.facilityid))
+        update_facility(facility.facilityid, facility)
+      except Exception as e:
+        print("User not found, creating {}".format(facility.facilityid))
+        create_facility(facility)
 
   def create_users(self):
     user_data = [
@@ -175,7 +302,7 @@ class DemoData:
       },
       {
         "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
-        "type": "patient",
+        "type": "physician",
         "is_patient": True,
         "first_name": "Michael",
         "last_name": "Brown",
@@ -229,3 +356,11 @@ class DemoData:
   def print_users(self):
     for user in self.users:
       print(user.dict())
+
+  def print_medications(self):
+    for medication in self.medications:
+      print(medication.dict())
+
+  def print_facilities(self):
+    for facility in self.facilities:
+      print(facility.dict())

@@ -6,6 +6,8 @@ from datetime import date
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from api.utils.db_utils import get_engine
+from api.dao.entities import Medication
 
 from api.utils.db_utils import get_engine  # Add this function in db_functions.py file
 
@@ -13,8 +15,8 @@ router = APIRouter(tags=["admin -> medication"])
 
 
 class MedicationBase(BaseModel):
-  medicationid: UUID
-  userid: UUID
+  medicationid: str
+  userid: str
   from_dt: Optional[date]
   until_dt: Optional[date]
   label: Optional[str]
@@ -30,7 +32,7 @@ class MedicationCreate(MedicationBase):
 
 
 class Medication(MedicationBase):
-  medicationid: UUID
+  medicationid: str
 
   class Config:
     orm_mode = True
@@ -47,7 +49,7 @@ def create_medication(medication: MedicationCreate):
 
 
 @router.get("/get/{medication_id}", response_model=Medication)
-def read_medication(medication_id: UUID):
+def get_medication(medication_id: str):
   with Session(get_engine()) as db:
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:
@@ -56,14 +58,14 @@ def read_medication(medication_id: UUID):
 
 
 @router.get("/list", response_model=List[Medication])
-def read_medications(skip: int = 0, limit: int = 100):
+def list_medications(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     medications = db.query(Medication).offset(skip).limit(limit).all()
     return medications
 
 
 @router.put("/update/{medication_id}", response_model=Medication)
-def update_medication(medication_id: UUID, medication: MedicationCreate):
+def update_medication(medication_id: str, medication: MedicationCreate):
   with Session(get_engine()) as db:
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:
@@ -75,7 +77,7 @@ def update_medication(medication_id: UUID, medication: MedicationCreate):
 
 
 @router.delete("/delete/{medication_id}")
-def delete_medication(medication_id: UUID):
+def delete_medication(medication_id: str):
   with Session(get_engine()) as db:
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:

@@ -47,7 +47,7 @@ def create_schedule(schedule: ScheduleCreate):
 
 
 @router.get("/get/{schedule_id}", response_model=ScheduleInDB)
-def read_schedule(schedule_id: UUID):
+def get_schedule(schedule_id: UUID):
   with Session(get_engine()) as db:
     db_schedule = db.query(Schedule).get(schedule_id)
     if db_schedule is None:
@@ -57,7 +57,7 @@ def read_schedule(schedule_id: UUID):
 
 
 @router.get("/list", response_model=List[ScheduleInDB])
-def read_schedules(skip: int = 0, limit: int = 100):
+def list_schedules(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     schedules = db.query(Schedule).offset(skip).limit(limit).all()
     return schedules

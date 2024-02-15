@@ -11,5 +11,7 @@ def create_demo_data():
   # Use the DemoData class to create users
   demo = DemoData()
   demo.create_users()
+  demo.create_facilities()
+  demo.create_medications()
   demo.print_users()
   return "Created demo data"

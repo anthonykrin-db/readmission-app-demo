@@ -23,3 +23,10 @@
 
   `ALTER ROLE postgres IN DATABASE readmission SET search_path TO demo;`
 
+6. Update .env file with JWT password.  You can use utils/secret_gen to create new secrets
+
+7. Load demo data by calling this URL with "post" from Postman:
+
+  http://localhost:8080/api/testing/data/create
+
+

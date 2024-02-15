@@ -45,7 +45,7 @@ def create_survey(survey: SurveyCreate):
 
 
 @router.get("/get/{survey_id}", response_model=SurveyInDB)
-def read_survey(survey_id: UUID):
+def get_survey(survey_id: UUID):
   with Session(get_engine()) as db:
     db_survey = db.query(Survey).get(survey_id)
     if db_survey is None:
@@ -55,7 +55,7 @@ def read_survey(survey_id: UUID):
 
 
 @router.get("/list", response_model=List[SurveyInDB])
-def read_surveys(skip: int = 0, limit: int = 100):
+def list_surveys(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     surveys = db.query(Survey).offset(skip).limit(limit).all()
     return surveys
