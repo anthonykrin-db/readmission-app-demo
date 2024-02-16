@@ -22,19 +22,8 @@ class SurveyBase(BaseModel):
   final_msg: Optional[str]
 
 
-class SurveyCreate(SurveyBase):
-  pass
-
-
-class SurveyInDB(SurveyBase):
-  surveyid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=SurveyInDB)
-def create_survey(survey: SurveyCreate):
+@router.post("/create")  #, response_model=SurveyInDB
+def create_survey(survey: SurveyBase):
   with Session(get_engine()) as db:
     db_survey = Survey(**survey.dict())
     db.add(db_survey)
@@ -44,7 +33,7 @@ def create_survey(survey: SurveyCreate):
     return db_survey
 
 
-@router.get("/get/{survey_id}", response_model=SurveyInDB)
+@router.get("/get/{survey_id}") #, response_model=SurveyInDB
 def get_survey(survey_id: UUID):
   with Session(get_engine()) as db:
     db_survey = db.query(Survey).get(survey_id)
@@ -54,15 +43,15 @@ def get_survey(survey_id: UUID):
     return db_survey
 
 
-@router.get("/list", response_model=List[SurveyInDB])
+@router.get("/list") #, response_model=List[SurveyInDB]
 def list_surveys(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     surveys = db.query(Survey).offset(skip).limit(limit).all()
     return surveys
 
 
-@router.put("/update/{survey_id}", response_model=SurveyInDB)
-def update_survey(survey_id: UUID, survey: SurveyCreate):
+@router.put("/update/{survey_id}") #, response_model=SurveyInDB
+def update_survey(survey_id: UUID, survey: SurveyBase):
   with Session(get_engine()) as db:
     db_survey = db.query(Survey).get(survey_id)
     if not db_survey:

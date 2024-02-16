@@ -27,19 +27,8 @@ class MedicationBase(BaseModel):
   warnings_info: Optional[str]
 
 
-class MedicationCreate(MedicationBase):
-  pass
-
-
-class Medication(MedicationBase):
-  medicationid: str
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=Medication)
-def create_medication(medication: MedicationCreate):
+@router.post("/create") #, response_model=Medication
+def create_medication(medication: MedicationBase):
   with Session(get_engine()) as db:
     db_medication = Medication(**medication.dict())
     db.add(db_medication)
@@ -48,7 +37,7 @@ def create_medication(medication: MedicationCreate):
     return db_medication
 
 
-@router.get("/get/{medication_id}", response_model=Medication)
+@router.get("/get/{medication_id}") #, response_model=Medication
 def get_medication(medication_id: str):
   with Session(get_engine()) as db:
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
@@ -57,15 +46,15 @@ def get_medication(medication_id: str):
     return db_medication
 
 
-@router.get("/list", response_model=List[Medication])
+@router.get("/list") #, response_model=List[Medication]
 def list_medications(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     medications = db.query(Medication).offset(skip).limit(limit).all()
     return medications
 
 
-@router.put("/update/{medication_id}", response_model=Medication)
-def update_medication(medication_id: str, medication: MedicationCreate):
+@router.put("/update/{medication_id}") #, response_model=Medication
+def update_medication(medication_id: str, medication: MedicationBase):
   with Session(get_engine()) as db:
     db_medication = db.query(Medication).filter(Medication.medicationid == medication_id).first()
     if db_medication is None:

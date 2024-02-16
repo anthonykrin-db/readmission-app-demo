@@ -1,27 +1,31 @@
 import hashlib
 
+from api.admin.appointment import AppointmentBase
+from api.admin.appointment import create_appointment, update_appointment, get_appointment
+from api.admin.contact import ContactBase
+from api.admin.contact import create_contact, update_contact, get_contact
 from api.admin.facility import FacilityBase
 from api.admin.facility import create_facility, update_facility, get_facility
 from api.admin.medication import MedicationBase
 from api.admin.medication import create_medication, update_medication, get_medication
+from api.admin.question import QuestionBase
+from api.admin.question import create_question, update_question, get_question
+from api.admin.response import ResponseBase
+from api.admin.response import create_response, update_response, get_response
+from api.admin.schedule import ScheduleBase
+from api.admin.schedule import create_schedule, update_schedule, get_schedule
+from api.admin.session import SessionBase
+from api.admin.session import create_session, update_session, get_session
+from api.admin.survey import SurveyBase
+from api.admin.survey import create_survey, update_survey, get_survey
+from api.admin.task import TaskBase
+from api.admin.task import create_task, update_task, get_task
 from api.admin.users import UserBase
 from api.admin.users import create_user, update_user, get_user
 
 
 # Some UUIDs
-# 094f0422-bad1-4f36-8ae0-4286012d8109
-# 72de3b47-3911-4397-81df-36444bdd6e63
-# 3c999b6a-2648-4545-93e7-aeb62d4abf60
-# 995d6c04-fa2b-4ad5-8a2f-9b72cda2a015
-# 76d679e2-3b10-4965-9706-b41b33011b82
-# bd9d3015-1a6b-4ccd-8720-24c22406c6a1
-# c310ffd4-d1cf-47a9-b497-4eeb4c0fd4d1
-# a9d7c76f-40dd-454e-a263-d598c5d7f061
-# ce814d52-a300-4304-b629-8d574b642de1
-# 45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1
-# dc53180d-6bf6-4d11-996e-50f505763936
-# 69eedc33-84ba-4ddf-91f7-fcb9fff549a8
-# b1960598-05c2-4a9c-a782-1993d13309ba
+
 # e56e0fc1-c4dc-448f-82e3-826de8017e57
 # acbb81bc-a0ef-4da2-85c9-1f6fb43c8e3c
 # 28ea74c8-9235-43f5-af2e-9d28c9dc0aac
@@ -121,83 +125,623 @@ class DemoData:
     self.questions = []
     self.responses = []
     self.tasks = []
+    self.surveys = []
     self.appointments = []
 
-    def create_medications(self):
+  def create_task(self):
 
-      medications_data = [
-        {
-          "medicationid": "3c5ae13e-758b-4a92-ae25-65bc9301f450",
-          "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
-          "from_dt": "2024-01-01",
-          "until_dt": "2024-01-31",
-          "label": "Aspirin",
-          "prescription": "Take one tablet daily with food.",
-          "take_dow_mask": None,
-          "dosage_info": "325 mg",
-          "usage_info": "For pain relief and reducing fever.",
-          "warnings_info": "Do not take if allergic to aspirin."
-        },
-        {
-          "medicationid": "4f996543-892d-40a2-bb7e-5db402ff828c",
-          "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
-          "from_dt": "2024-02-01",
-          "until_dt": "2024-02-28",
-          "label": "Lisinopril",
-          "prescription": "Take one tablet daily in the morning.",
-          "take_dow_mask": None,
-          "dosage_info": "10 mg",
-          "usage_info": "For controlling blood pressure.",
-          "warnings_info": "May cause dizziness. Avoid alcohol."
-        },
-        {
-          "medicationid": "fc28cb05-36d5-4b16-a127-86b3d94c79b1",
-          "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
-          "from_dt": "2024-01-15",
-          "until_dt": "2024-03-15",
-          "label": "Omeprazole",
-          "prescription": "Take one capsule daily before breakfast.",
-          "take_dow_mask": None,
-          "dosage_info": "20 mg",
-          "usage_info": "For treating acid reflux and heartburn.",
-          "warnings_info": "Do not crush or chew capsules."
-        },
-        {
-          "medicationid": "824f02a1-9c5c-4746-a7f3-ef3398239ef7",
-          "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
-          "from_dt": "2024-02-01",
-          "until_dt": "2024-02-28",
-          "label": "Simvastatin",
-          "prescription": "Take one tablet daily at bedtime.",
-          "take_dow_mask": None,
-          "dosage_info": "20 mg",
-          "usage_info": "For lowering cholesterol levels.",
-          "warnings_info": "Avoid grapefruit juice while taking this medication."
-        },
-        {
-          "medicationid": "cd29bb35-f27e-46f7-9d61-90e0e11b06b3",
-          "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
-          "from_dt": "2024-01-01",
-          "until_dt": "2024-01-31",
-          "label": "Ibuprofen",
-          "prescription": "Take one tablet every 4-6 hours as needed for pain.",
-          "take_dow_mask": None,
-          "dosage_info": "200 mg",
-          "usage_info": "For relief of minor aches and pains.",
-          "warnings_info": "Do not exceed recommended dosage."
-        }
-      ]
+    tasks_data = [
+      {
+        "taskid": "3d6f9618-df4d-4a3f-b1a8-abc12918df13",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "type": "taskType1",
+        "extid": "ext123",
+        "due_dt": "2023-04-25",
+        "completed_dt": None,
+        "status": "ongoing",
+        "created_dt": "2023-03-31",
+        "data": {"detail": "task detail 1"},
+        "surveyid": None,
+        "appointmentid": None,
+        "medicationid": None,
+        "scheduleid": None
+      },
+      {
+        "taskid": "4c6e9618-df4d-4a3f-b785-abc12918df14",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "type": "taskType2",
+        "extid": "ext124",
+        "due_dt": "2023-04-26",
+        "completed_dt": "2023-04-01",
+        "status": "completed",
+        "created_dt": "2023-03-31",
+        "data": {"detail": "task detail 2"},
+        "surveyid": None,
+        "appointmentid": None,
+        "medicationid": None,
+        "scheduleid": None
+      },
+      {
+        "taskid": "5d6f9618-df4d-4a3f-b1a8-abc12918df15",
+        "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "type": "taskType3",
+        "extid": "ext125",
+        "due_dt": "2023-04-27",
+        "completed_dt": None,
+        "status": "ongoing",
+        "created_dt": "2023-03-31",
+        "data": {"detail": "task detail 3"},
+        "surveyid": None,
+        "appointmentid": None,
+        "medicationid": None,
+        "scheduleid": None
+      },
+      {
+        "taskid": "6e6f9618-df4d-4a3f-b1a8-abc12918df16",
+        "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+        "type": "taskType4",
+        "extid": "ext126",
+        "due_dt": "2023-04-28",
+        "completed_dt": "2023-04-01",
+        "status": "completed",
+        "created_dt": "2023-03-31",
+        "data": {"detail": "task detail 4"},
+        "surveyid": "df581939-1262-4451-8233-b20ae7469df2",
+        "appointmentid": None,
+        "medicationid": None,
+        "scheduleid": None
+      },
+      {
+        "taskid": "7f6f9618-df4d-4a3f-b1a8-abc12918df17",
+        "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
+        "type": "taskType5",
+        "extid": "ext127",
+        "due_dt": "2023-04-29",
+        "completed_dt": None,
+        "status": "ongoing",
+        "created_dt": "2023-03-31",
+        "data": {"detail": "task detail 5"},
+        "surveyid": None,
+        "appointmentid": None,
+        "medicationid": None,
+        "scheduleid": None
+      }
+    ]
 
-      for data in medications_data:
-        medication = MedicationBase(**data)
-        self.medications.append(medication)
-        try:
-          existing_medication = get_medication(medication.medicationid)
-          print("Found medication, updating {}".format(medication.medicationid))
-          update_medication(medication.medicationid, medication)
-        except Exception as e:
-          print("User not found, creating {}".format(medication.medicationid))
-          create_medication(medication)
+    for data in tasks_data:
+      task = TaskBase(**data)
+      self.tasks.append(task)
+      try:
+        existing_task = get_task(task.taskid)
+        print("Found task, updating {}".format(task.taskid))
+        update_task(task.taskid, task)
+      except Exception as e:
+        print("User not found, creating {}".format(task.taskid))
+        create_task(task)
+
+  def create_survey(self):
+    #
+    #
+    #
+    #
+    # 45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1
+    # dc53180d-6bf6-4d11-996e-50f505763936
+    # 69eedc33-84ba-4ddf-91f7-fcb9fff549a8
+    # b1960598-05c2-4a9c-a782-1993d13309ba
+    surveys_data = [
+      {
+        "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
+        "title": "Survey 1",
+        "description": "This is the first survey.",
+        "created_dt": "2023-03-30",
+        "data": {"question": "What is your favorite color?"},
+        "final_msg": "Thank you for completing the survey!"
+      },
+      {
+        "surveyid": "bd9d3015-1a6b-4ccd-8720-24c22406c6a1",
+        "title": "Survey 2",
+        "description": "This is the second survey.",
+        "created_dt": "2023-03-31",
+        "data": {"question": "What is your favorite animal?"},
+        "final_msg": "Your response has been recorded. Thank you!"
+      },
+      {
+        "surveyid": "c310ffd4-d1cf-47a9-b497-4eeb4c0fd4d1",
+        "title": "Survey 3",
+        "description": None,
+        "created_dt": "2023-04-01",
+        "data": {"question": "What is your favorite food?"},
+        "final_msg": "We appreciate your time spent on this survey."
+      },
+      {
+        "surveyid": "a9d7c76f-40dd-454e-a263-d598c5d7f061",
+        "title": "Survey 4",
+        "description": "This is the fourth survey.",
+        "created_dt": "2023-04-02",
+        "data": {"question": "What is your favorite place to visit?"},
+        "final_msg": None
+      },
+      {
+        "surveyid": "ce814d52-a300-4304-b629-8d574b642de1",
+        "title": "Survey 5",
+        "description": None,
+        "created_dt": "2023-04-03",
+        "data": {"question": "What is your favorite hobby?"},
+        "final_msg": "Your participation is greatly appreciated. Thank you!"
+      }
+    ]
+
+    for data in surveys_data:
+      survey = SurveyBase(**data)
+      self.surveys.append(survey)
+      try:
+        existing_survey = get_survey(survey.surveyid)
+        print("Found survey, updating {}".format(survey.surveyid))
+        update_survey(survey.surveyid, survey)
+      except Exception as e:
+        print("User not found, creating {}".format(survey.surveyid))
+        create_survey(survey)
+
+  def create_session(self):
+
+    sessions_data = [{}]
+
+    for data in sessions_data:
+      session = SessionBase(**data)
+      self.sessions.append(session)
+      try:
+        existing_session = get_session(session.sessionid)
+        print("Found session, updating {}".format(session.sessionid))
+        update_session(session.sessionid, session)
+      except Exception as e:
+        print("User not found, creating {}".format(session.sessionid))
+        create_session(session)
+
+  def create_schedule(self):
+
+    schedules_data = [
+      {
+        "scheduleid": "a123b456-c789-d012-e345-f678g901",
+        "label": "Work Schedule",
+        "type": "Work",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "dow_mask": "Monday, Tuesday, Wednesday, Thursday, Friday",
+        "start_dt": "2023-04-01",
+        "end_dt": "2023-04-30",
+        "repeats": True,
+        "data": None
+      },
+      {
+        "scheduleid": "b234c567-d890-e123-f456-g789h012",
+        "label": "Gym Schedule",
+        "type": "Exercise",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "dow_mask": "Monday, Wednesday, Friday",
+        "start_dt": "2023-04-01",
+        "end_dt": "2023-04-30",
+        "repeats": True,
+        "data": None
+      },
+      {
+        "scheduleid": "c345d678-e901-f234-g567-h890i123",
+        "label": "Study Schedule",
+        "type": "Study",
+        "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "dow_mask": "Tuesday, Thursday, Saturday",
+        "start_dt": "2023-04-01",
+        "end_dt": "2023-04-30",
+        "repeats": True,
+        "data": None
+      },
+      {
+        "scheduleid": "d456e789-f012-g345-h678-i901j234",
+        "label": "Meditation Schedule",
+        "type": "Meditation",
+        "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+        "dow_mask": "Everyday",
+        "start_dt": "2023-04-01",
+        "end_dt": "2023-04-30",
+        "repeats": True,
+        "data": None
+      },
+      {
+        "scheduleid": "e567f890-g123-h456-i789-j012k345",
+        "label": "Reading Schedule",
+        "type": "Reading",
+        "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
+        "dow_mask": "Thursday, Friday, Saturday, Sunday",
+        "start_dt": "2023-04-01",
+        "end_dt": "2023-04-30",
+        "repeats": True,
+        "data": None
+      }
+    ]
+
+    for data in schedules_data:
+      schedule = ScheduleBase(**data)
+      self.schedules.append(schedule)
+      try:
+        existing_schedule = get_schedule(schedule.scheduleid)
+        print("Found schedule, updating {}".format(schedule.scheduleid))
+        update_schedule(schedule.scheduleid, schedule)
+      except Exception as e:
+        print("User not found, creating {}".format(schedule.scheduleid))
+        create_schedule(schedule)
+
+  def create_response(self):
+
+    responses_data = [
+      {
+        "responseid": "a1b2c3d4-e5f6-g7h8-i9j10-k11l12m13",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
+        "questionid": "a91b3357-c998-4455-bf52-a5dae20c3732",
+        "answers": "Red",
+        "other": None,
+        "skipped": False
+      },
+      {
+        "responseid": "b1c2d3e4-f5g6-h7i8-j9k10-l11m12n13",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "surveyid": "b82c2248-d898-4466-af53-a6dbf11e3733",
+        "questionid": "b22c4478-d999-4466-af53-a6dbf21d3733",
+        "answers": "Dog",
+        "other": None,
+        "skipped": False
+      },
+      {
+        "responseid": "c1d2e3f4-g5h6-i7j8-k9l10-m11n12o13",
+        "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "surveyid": "c93d2359-e999-4477-af54-a7ebc12f3844",
+        "questionid": "c33d5599-e159-4477-af54-a7ebc22e3844",
+        "answers": "Pizza",
+        "other": None,
+        "skipped": False
+      },
+      {
+        "responseid": "d1e2f3g4-h5i6-j7k8-l9m10-n11o12p13",
+        "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+        "surveyid": "d04e2460-f89a-4488-af55-b8fcc13e3955",
+        "questionid": "d44e6690-f2aa-4488-af55-b8fcc23f3955",
+        "answers": "5",
+        "other": None,
+        "skipped": False
+      },
+      {
+        "responseid": "e1f2g3h4-i5j6-k7l8-m9n10-o11p12q13",
+        "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
+        "surveyid": "e15f2571-g89b-4499-af56-c9fdd14f3966",
+        "questionid": "e55f7791-g3bb-4499-af56-c9fdd24f3966",
+        "answers": "Through a friend",
+        "other": None,
+        "skipped": False
+      }
+    ]
+
+    for data in responses_data:
+      response = ResponseBase(**data)
+      self.responses.append(response)
+      try:
+        existing_response = get_response(response.responseid)
+        print("Found response, updating {}".format(response.responseid))
+        update_response(response.responseid, response)
+      except Exception as e:
+        print("User not found, creating {}".format(response.responseid))
+        create_response(response)
+
+  def create_question(self):
+
+    questions_data = [
+      {
+        "questionid": "a91b3357-c998-4455-bf52-a5dae20c3732",
+        "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
+        "type": "choice",
+        "question": "What is your favorite color?",
+        "responses": "Red,Blue,Green,Yellow",
+        "data": None,
+        "multiple_choice": False,
+        "has_other": True,
+        "other_label": "Other, please specify:",
+        "sequence": 1
+      },
+      {
+        "questionid": "b22c4478-d999-4466-af53-a6dbf21d3733",
+        "surveyid": "b82c2248-d898-4466-af53-a6dbf11e3733",
+        "type": "choice",
+        "question": "What is your favorite animal?",
+        "responses": "Dog,Cat,Bird,Fish",
+        "data": None,
+        "multiple_choice": False,
+        "has_other": False,
+        "other_label": None,
+        "sequence": 1
+      },
+      {
+        "questionid": "c33d5599-e159-4477-af54-a7ebc22e3844",
+        "surveyid": "c93d2359-e999-4477-af54-a7ebc12f3844",
+        "type": "open",
+        "question": "What is your favorite food?",
+        "responses": None,
+        "data": None,
+        "multiple_choice": False,
+        "has_other": False,
+        "other_label": None,
+        "sequence": 1
+      },
+      {
+        "questionid": "d44e6690-f2aa-4488-af55-b8fcc23f3955",
+        "surveyid": "d04e2460-f89a-4488-af55-b8fcc13e3955",
+        "type": "rating",
+        "question": "How much do you like our service?",
+        "responses": "1,2,3,4,5",
+        "data": None,
+        "multiple_choice": False,
+        "has_other": False,
+        "other_label": None,
+        "sequence": 1
+      },
+      {
+        "questionid": "e55f7791-g3bb-4499-af56-c9fdd24f3966",
+        "surveyid": "e15f2571-g89b-4499-af56-c9fdd14f3966",
+        "type": "open",
+        "question": "How did you hear about us?",
+        "responses": None,
+        "data": None,
+        "multiple_choice": False,
+        "has_other": False,
+        "other_label": None,
+        "sequence": 1
+      }
+    ]
+
+    for data in questions_data:
+      question = QuestionBase(**data)
+      self.questions.append(question)
+      try:
+        existing_question = get_question(question.questionid)
+        print("Found question, updating {}".format(question.questionid))
+        update_question(question.questionid, question)
+      except Exception as e:
+        print("User not found, creating {}".format(question.questionid))
+        create_question(question)
+
+  def create_contact(self):
+    #
+    #
+    #
+    #
+    #
+    contacts_data = [
+      {
+        "contactid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "contact_extid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "contact_label": "Friend"
+      },
+      {
+        "contactid": "72de3b47-3911-4397-81df-36444bdd6e63",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "contact_extid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "contact_label": "Coworker"
+      },
+      {
+        "contactid": "3c999b6a-2648-4545-93e7-aeb62d4abf60",
+        "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "contact_extid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+        "contact_label": "Family"
+      },
+      {
+        "contactid": "995d6c04-fa2b-4ad5-8a2f-9b72cda2a015",
+        "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+        "contact_extid": "eddca073-6d69-477e-97e3-71b18b926c50",
+        "contact_label": "Friend"
+      },
+      {
+        "contactid": "76d679e2-3b10-4965-9706-b41b33011b82",
+        "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
+        "contact_extid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "contact_label": "Coworker"
+      }
+    ]
+
+    for data in contacts_data:
+      contact = ContactBase(**data)
+      self.contacts.append(contact)
+      try:
+        existing_contact = get_contact(contact.contactid)
+        print("Found contact, updating {}".format(contact.contactid))
+        update_contact(contact.contactid, contact)
+      except Exception as e:
+        print("User not found, creating {}".format(contact.contactid))
+        create_contact(contact)
+
+  def create_appointments(self):
+
+    appointments_data = [
+      {
+        "appointmentid": "a1b2c3d4-e5f6-g7h8-i9j10-k11l12m13",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "start_date": "2023-05-01",
+        "end_date": "2023-05-01",
+        "location": "Hospital A",
+        "physician": "Dr. John Smith",
+        "reason": "Routine Checkup",
+        "reason_es": "Revisión de rutina",
+        "confirmed": True,
+        "confirmed_dt": "2023-04-20",
+        "reschedule_phone": "123-456-7890",
+        "cancelled": False,
+        "cancelled_dt": None,
+        "days_reminder": 7
+      },
+      {
+        "appointmentid": "b2c3d4e5-f6g7-h8i9-j10k11-l12m13n14",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "start_date": "2023-06-01",
+        "end_date": "2023-06-01",
+        "location": "Hospital A",
+        "physician": "Dr. John Smith",
+        "reason": "Follow-Up",
+        "reason_es": "Seguimiento",
+        "confirmed": False,
+        "confirmed_dt": None,
+        "reschedule_phone": "123-456-7890",
+        "cancelled": False,
+        "cancelled_dt": None,
+        "days_reminder": 7
+      },
+      {
+        "appointmentid": "c3d4e5f6-g7h8-i9j10-k11l12-m13n14o15",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "start_date": "2023-07-01",
+        "end_date": "2023-07-01",
+        "location": "Hospital A",
+        "physician": "Dr. John Smith",
+        "reason": "Follow-Up",
+        "reason_es": "Seguimiento",
+        "confirmed": False,
+        "confirmed_dt": None,
+        "reschedule_phone": "123-456-7890",
+        "cancelled": False,
+        "cancelled_dt": None,
+        "days_reminder": 7
+      },
+      {
+        "appointmentid": "d4e5f6g7-h8i9-j10k11-l12m13-n14o15p16",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "start_date": "2023-05-02",
+        "end_date": "2023-05-02",
+        "location": "Hospital B",
+        "physician": "Dr. Jane Doe",
+        "reason": "Blood Test",
+        "reason_es": "Análisis de sangre",
+        "confirmed": True,
+        "confirmed_dt": "2023-04-22",
+        "reschedule_phone": "234-567-8901",
+        "cancelled": False,
+        "cancelled_dt": None,
+        "days_reminder": 5
+      },
+      {
+        "appointmentid": "e5f6g7h8-i9j10-k11l12-m13n14-o15p16q17",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "start_date": "2023-06-02",
+        "end_date": "2023-06-02",
+        "location": "Hospital B",
+        "physician": "Dr. Jane Doe",
+        "reason": "Heart Checkup",
+        "reason_es": "Chequeo de corazón",
+        "confirmed": False,
+        "confirmed_dt": None,
+        "reschedule_phone": "234-567-8901",
+        "cancelled": False,
+        "cancelled_dt": None,
+        "days_reminder": 5
+      },
+      {
+        "appointmentid": "f6g7h8i9-j10k11-l12m13-n14o15-p16q17r18",
+        "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "start_date": "2023-05-03",
+        "end_date": "2023-05-03",
+        "location": "Hospital C",
+        "physician": "Dr. Robert Taylor",
+        "reason": "Vaccination",
+        "reason_es": "Vacunación",
+        "confirmed": True,
+        "confirmed_dt": "2023-04-25",
+        "reschedule_phone": "456-789-0123",
+        "cancelled": False,
+        "cancelled_dt": None,
+        "days_reminder": 10
+      }
+    ]
+
+    for data in appointments_data:
+      appointment = AppointmentBase(**data)
+      self.appointments.append(appointment)
+      try:
+        existing_appointment = get_appointment(appointment.appointmentid)
+        print("Found appointment, updating {}".format(appointment.appointmentid))
+        update_appointment(appointment.appointmentid, appointment)
+      except Exception as e:
+        print("User not found, creating {}".format(appointment.appointmentid))
+        create_appointment(appointment)
+
+  def create_medications(self):
+
+    medications_data = [
+      {
+        "medicationid": "3c5ae13e-758b-4a92-ae25-65bc9301f450",
+        "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
+        "from_dt": "2024-01-01",
+        "until_dt": "2024-01-31",
+        "label": "Aspirin",
+        "prescription": "Take one tablet daily with food.",
+        "take_dow_mask": None,
+        "dosage_info": "325 mg",
+        "usage_info": "For pain relief and reducing fever.",
+        "warnings_info": "Do not take if allergic to aspirin."
+      },
+      {
+        "medicationid": "4f996543-892d-40a2-bb7e-5db402ff828c",
+        "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
+        "from_dt": "2024-02-01",
+        "until_dt": "2024-02-28",
+        "label": "Lisinopril",
+        "prescription": "Take one tablet daily in the morning.",
+        "take_dow_mask": None,
+        "dosage_info": "10 mg",
+        "usage_info": "For controlling blood pressure.",
+        "warnings_info": "May cause dizziness. Avoid alcohol."
+      },
+      {
+        "medicationid": "fc28cb05-36d5-4b16-a127-86b3d94c79b1",
+        "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
+        "from_dt": "2024-01-15",
+        "until_dt": "2024-03-15",
+        "label": "Omeprazole",
+        "prescription": "Take one capsule daily before breakfast.",
+        "take_dow_mask": None,
+        "dosage_info": "20 mg",
+        "usage_info": "For treating acid reflux and heartburn.",
+        "warnings_info": "Do not crush or chew capsules."
+      },
+      {
+        "medicationid": "824f02a1-9c5c-4746-a7f3-ef3398239ef7",
+        "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
+        "from_dt": "2024-02-01",
+        "until_dt": "2024-02-28",
+        "label": "Simvastatin",
+        "prescription": "Take one tablet daily at bedtime.",
+        "take_dow_mask": None,
+        "dosage_info": "20 mg",
+        "usage_info": "For lowering cholesterol levels.",
+        "warnings_info": "Avoid grapefruit juice while taking this medication."
+      },
+      {
+        "medicationid": "cd29bb35-f27e-46f7-9d61-90e0e11b06b3",
+        "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
+        "from_dt": "2024-01-01",
+        "until_dt": "2024-01-31",
+        "label": "Ibuprofen",
+        "prescription": "Take one tablet every 4-6 hours as needed for pain.",
+        "take_dow_mask": None,
+        "dosage_info": "200 mg",
+        "usage_info": "For relief of minor aches and pains.",
+        "warnings_info": "Do not exceed recommended dosage."
+      }
+    ]
+
+    for data in medications_data:
+      medication = MedicationBase(**data)
+      self.medications.append(medication)
+      try:
+        existing_medication = get_medication(medication.medicationid)
+        print("Found medication, updating {}".format(medication.medicationid))
+        update_medication(medication.medicationid, medication)
+      except Exception as e:
+        print("User not found, creating {}".format(medication.medicationid))
+        create_medication(medication)
 
   def create_facilities(self):
     facilities_data = [
@@ -235,7 +779,7 @@ class DemoData:
         print("Found facility, updating {}".format(facility.facilityid))
         update_facility(facility.facilityid, facility)
       except Exception as e:
-        print("User not found, creating {}".format(facility.facilityid))
+        print("Facility not found, creating {}".format(facility.facilityid))
         create_facility(facility)
 
   def create_users(self):

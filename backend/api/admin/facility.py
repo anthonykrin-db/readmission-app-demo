@@ -3,17 +3,13 @@
 from typing import List, Optional
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
+from uuid import UUID
 from sqlalchemy.orm import Session
-from api.utils.db_utils import get_engine
 from api.dao.entities import Facility
-
-
 from api.utils.db_utils import get_engine  # Add this function in db_functions.py file
 
 router = APIRouter(tags=["admin -> facility"])
 
-
-##app = FastAPI()
 
 class FacilityBase(BaseModel):
   facilityid: str
@@ -24,21 +20,7 @@ class FacilityBase(BaseModel):
   photo_url: Optional[str]
 
 
-class FacilityCreate(FacilityBase):
-  pass
-
-
-class Facility(FacilityBase):
-  facilityid: str
-
-  class Config:
-    orm_mode = True
-
-
-# app = FastAPI()
-
-
-@router.post("/create/", response_model=Facility)
+@router.post("/create/") #, response_model=Facility
 def create_facility(facility: FacilityBase):
   with Session(get_engine()) as db:
     db_facility = Facility(**facility.dict())
@@ -48,7 +30,7 @@ def create_facility(facility: FacilityBase):
     return db_facility
 
 
-@router.get("/get/{facility_id}", response_model=Facility)
+@router.get("/get/{facility_id}") #, response_model=FacilityBase
 def get_facility(facility_id: str):
   with Session(get_engine()) as db:
     db_facility = db.query(Facility).filter(Facility.facilityid == facility_id).first()
@@ -57,15 +39,15 @@ def get_facility(facility_id: str):
     return db_facility
 
 
-@router.get("/list/", response_model=List[Facility])
+@router.get("/list/") #, response_model=List[Facility]
 def list_facilities(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     facilities = db.query(Facility).offset(skip).limit(limit).all()
     return facilities
 
 
-@router.put("/update/{facility_id}", response_model=Facility)
-def update_facility(facility_id: str, facility: FacilityCreate):
+@router.put("/update/{facility_id}") #, response_model=Facility
+def update_facility(facility_id: str, facility: FacilityBase):
   with Session(get_engine()) as db:
     db_facility = db.query(Facility).filter(Facility.facilityid == facility_id).first()
     if db_facility is None:

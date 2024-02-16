@@ -28,19 +28,9 @@ class TaskBase(BaseModel):
   scheduleid: Optional[UUID]
 
 
-class TaskCreate(TaskBase):
-  pass
 
-
-class TaskInDB(TaskBase):
-  taskid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=TaskInDB)
-def create_task(task: TaskCreate):
+@router.post("/create") #, response_model=TaskInDB
+def create_task(task: TaskBase):
   with Session(get_engine()) as db:
     db_task = Task(**task.dict())
     db.add(db_task)
@@ -50,7 +40,7 @@ def create_task(task: TaskCreate):
     return db_task
 
 
-@router.get("/get/{task_id}", response_model=TaskInDB)
+@router.get("/get/{task_id}") #, response_model=TaskInDB
 def get_task(task_id: UUID):
   with Session(get_engine()) as db:
     db_task = db.query(Task).get(task_id)
@@ -60,15 +50,15 @@ def get_task(task_id: UUID):
     return db_task
 
 
-@router.get("/list", response_model=List[TaskInDB])
+@router.get("/list") #, response_model=List[TaskInDB]
 def list_tasks(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     tasks = db.query(Task).offset(skip).limit(limit).all()
     return tasks
 
 
-@router.put("/update/{task_id}", response_model=TaskInDB)
-def update_task(task_id: UUID, task: TaskCreate):
+@router.put("/update/{task_id}") #, response_model=TaskInDB
+def update_task(task_id: UUID, task: TaskBase):
   with Session(get_engine()) as db:
     db_task = db.query(Task).get(task_id)
     if not db_task:

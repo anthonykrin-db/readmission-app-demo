@@ -4,7 +4,7 @@ from uuid import UUID
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
+from api.dao.entities import Contact
 from api.utils.db_utils import get_engine  # Add this function in db_functions.py file
 
 router = APIRouter(tags=["admin -> contact"])
@@ -17,28 +17,17 @@ class ContactBase(BaseModel):
   contact_label: Optional[str]
 
 
-class ContactCreate(ContactBase):
-  pass
-
-
-class Contact(ContactBase):
-  contactid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create/", response_model=Contact)
-def create_contact(contact: ContactCreate):
+@router.post("/create/") #, response_model=Contact
+def create_contact(contact: ContactBase):
   with Session(get_engine()) as db:
     db_contact = Contact(**contact.dict())
     db.add(db_contact)
     db.commit()
     db.refresh(db_contact)
-    return db_contact
+    return contact
 
 
-@router.get("/get/{contact_id}", response_model=Contact)
+@router.get("/get/{contact_id}") #, response_model=Contact
 def get_contact(contact_id: UUID):
   with Session(get_engine()) as db:
     db_contact = db.query(Contact).filter(Contact.contactid == contact_id).first()
@@ -47,15 +36,15 @@ def get_contact(contact_id: UUID):
     return db_contact
 
 
-@router.get("/list/", response_model=List[Contact])
+@router.get("/list/") #, response_model=List[Contact]
 def list_contacts(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     contacts = db.query(Contact).offset(skip).limit(limit).all()
     return contacts
 
 
-@router.put("/update/{contact_id}", response_model=Contact)
-def update_contact(contact_id: UUID, contact: ContactCreate):
+@router.put("/update/{contact_id}") #, response_model=Contact
+def update_contact(contact_id: UUID, contact: ContactBase):
   with Session(get_engine()) as db:
     db_contact = db.query(Contact).filter(Contact.contactid == contact_id).first()
     if db_contact is None:

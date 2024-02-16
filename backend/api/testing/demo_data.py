@@ -10,8 +10,13 @@ router = APIRouter(tags=["testing -> demo data"])
 def create_demo_data():
   # Use the DemoData class to create users
   demo = DemoData()
+  demo.create_facilities()
+  demo.create_medications()
   demo.create_users()
-  #demo.create_facilities()
-  #demo.create_medications()
-  demo.print_users()
+  demo.create_contact()
+  demo.create_survey()
+  #demo.create_question()
+  #demo.create_response()
+  #demo.create_schedule()
+  #demo.create_appointments()
   return "Created demo data"

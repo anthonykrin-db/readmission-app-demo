@@ -21,17 +21,8 @@ class ResponseBase(BaseModel):
   skipped: Optional[bool]
 
 
-class ResponseCreate(ResponseBase):
-  pass
-
-
-class ResponseInDB(ResponseBase):
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=ResponseInDB)
-def create_response(response: ResponseCreate):
+@router.post("/create") #, response_model=ResponseInDB
+def create_response(response: ResponseBase):
   with Session(get_engine()) as db:
     db_response = Response(**response.dict())
     db.add(db_response)
@@ -41,7 +32,7 @@ def create_response(response: ResponseCreate):
     return db_response
 
 
-@router.get("/get/{response_id}", response_model=ResponseInDB)
+@router.get("/get/{response_id}") #, response_model=ResponseInDB
 def get_response(response_id: UUID):
   with Session(get_engine()) as db:
     db_response = db.query(Response).get(response_id)
@@ -51,15 +42,15 @@ def get_response(response_id: UUID):
     return db_response
 
 
-@router.get("/list", response_model=List[ResponseInDB])
+@router.get("/list")  #, response_model=List[ResponseInDB]
 def list_responses(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     responses = db.query(Response).offset(skip).limit(limit).all()
     return responses
 
 
-@router.put("/update/{response_id}", response_model=ResponseInDB)
-def update_response(response_id: UUID, response: ResponseCreate):
+@router.put("/update/{response_id}") #, response_model=ResponseInDB
+def update_response(response_id: UUID, response: ResponseBase):
   with Session(get_engine()) as db:
     db_response = db.query(Response).get(response_id)
     if not db_response:

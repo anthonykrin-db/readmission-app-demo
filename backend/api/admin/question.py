@@ -24,19 +24,9 @@ class QuestionBase(BaseModel):
   sequence: Optional[int]
 
 
-class QuestionCreate(QuestionBase):
-  pass
 
-
-class QuestionInDB(QuestionBase):
-  questionid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=QuestionInDB)
-def create_question(question: QuestionCreate):
+@router.post("/create") #, response_model=QuestionInDB
+def create_question(question: QuestionBase):
   with Session(get_engine()) as db:
     db_question = Question(**question.dict())
     db.add(db_question)
@@ -46,7 +36,7 @@ def create_question(question: QuestionCreate):
     return db_question
 
 
-@router.get("/get/{question_id}", response_model=QuestionInDB)
+@router.get("/get/{question_id}") #, response_model=QuestionInDB
 def get_question(question_id: UUID):
   with Session(get_engine()) as db:
     db_question = db.query(Question).get(question_id)
@@ -56,15 +46,15 @@ def get_question(question_id: UUID):
     return db_question
 
 
-@router.get("/list", response_model=List[QuestionInDB])
+@router.get("/list") #, response_model=List[QuestionInDB]
 def list_questions(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     questions = db.query(Question).offset(skip).limit(limit).all()
     return questions
 
 
-@router.put("/update/{question_id}", response_model=QuestionInDB)
-def update_question(question_id: UUID, question: QuestionCreate):
+@router.put("/update/{question_id}") #, response_model=QuestionInDB
+def update_question(question_id: UUID, question: QuestionBase):
   with Session(get_engine()) as db:
     db_question = db.query(Question).get(question_id)
     if not db_question:

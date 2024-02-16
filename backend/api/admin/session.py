@@ -18,20 +18,8 @@ class SessionBase(BaseModel):
   login_dt: Optional[date]
   exp_dt: Optional[date]
 
-
-class SessionCreate(SessionBase):
-  pass
-
-
-class SessionInDB(SessionBase):
-  sessionid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=SessionInDB)
-def create_session(session: SessionCreate):
+@router.post("/create") #, response_model=SessionInDB
+def create_session(session: SessionBase):
   with Session(get_engine()) as db:
     db_session = Session(**session.dict())
     db.add(db_session)
@@ -41,7 +29,7 @@ def create_session(session: SessionCreate):
     return db_session
 
 
-@router.get("/get/{session_id}", response_model=SessionInDB)
+@router.get("/get/{session_id}") #, response_model=SessionInDB
 def get_session(session_id: UUID):
   with Session(get_engine()) as db:
     db_session = db.query(Session).get(session_id)
@@ -51,15 +39,15 @@ def get_session(session_id: UUID):
     return db_session
 
 
-@router.get("/list", response_model=List[SessionInDB])
+@router.get("/list") #, response_model=List[SessionInDB]
 def list_sessions(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     sessions = db.query(Session).offset(skip).limit(limit).all()
     return sessions
 
 
-@router.put("/update/{session_id}", response_model=SessionInDB)
-def update_session(session_id: UUID, session: SessionCreate):
+@router.put("/update/{session_id}") #, response_model=SessionInDB
+def update_session(session_id: UUID, session: SessionBase):
   with Session(get_engine()) as db:
     db_session = db.query(Session).get(session_id)
     if not db_session:

@@ -31,19 +31,7 @@ class UserBase(BaseModel):
   photo_url: Optional[str]
   username: str
 
-
-class UserCreate(UserBase):
-  pass
-
-
-class User(UserBase):
-  userid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create/", response_model=User)
+@router.post("/create/") #, response_model=Users
 def create_user(user: UserBase):
   with Session(get_engine()) as db:
     db_user = Users(**user.dict())
@@ -53,7 +41,7 @@ def create_user(user: UserBase):
     return db_user
 
 
-@router.get("/get/{user_id}", response_model=User)
+@router.get("/get/{user_id}") #, response_model=Users
 def get_user(user_id: str):
   with Session(get_engine()) as db:
     db_user = db.query(Users).filter(Users.userid == user_id).first()
@@ -62,14 +50,14 @@ def get_user(user_id: str):
     return db_user
 
 
-@router.get("/list/", response_model=List[User])
+@router.get("/list/") #, response_model=List[Users]
 def list_users(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     db_users = db.query(Users).offset(skip).limit(limit).all()
     return db_users
 
 
-@router.put("/update/{user_id}", response_model=User)
+@router.put("/update/{user_id}") #, response_model=Users
 def update_user(user_id: UUID, user: UserBase):
   with Session(get_engine()) as db:
     db_user = db.query(Users).filter(Users.userid == user_id).first()

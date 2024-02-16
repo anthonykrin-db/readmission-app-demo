@@ -24,19 +24,9 @@ class ScheduleBase(BaseModel):
   data: Optional[dict]
 
 
-class ScheduleCreate(ScheduleBase):
-  pass
 
-
-class ScheduleInDB(ScheduleBase):
-  scheduleid: UUID
-
-  class Config:
-    orm_mode = True
-
-
-@router.post("/create", response_model=ScheduleInDB)
-def create_schedule(schedule: ScheduleCreate):
+@router.post("/create") #, response_model=ScheduleInDB
+def create_schedule(schedule: ScheduleBase):
   with Session(get_engine()) as db:
     db_schedule = Schedule(**schedule.dict())
     db.add(db_schedule)
@@ -46,7 +36,7 @@ def create_schedule(schedule: ScheduleCreate):
     return db_schedule
 
 
-@router.get("/get/{schedule_id}", response_model=ScheduleInDB)
+@router.get("/get/{schedule_id}") #, response_model=ScheduleInDB
 def get_schedule(schedule_id: UUID):
   with Session(get_engine()) as db:
     db_schedule = db.query(Schedule).get(schedule_id)
@@ -56,15 +46,15 @@ def get_schedule(schedule_id: UUID):
     return db_schedule
 
 
-@router.get("/list", response_model=List[ScheduleInDB])
+@router.get("/list") #, response_model=List[ScheduleInDB]
 def list_schedules(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     schedules = db.query(Schedule).offset(skip).limit(limit).all()
     return schedules
 
 
-@router.put("/update/{schedule_id}", response_model=ScheduleInDB)
-def update_schedule(schedule_id: UUID, schedule: ScheduleCreate):
+@router.put("/update/{schedule_id}")  #, response_model=ScheduleInDB
+def update_schedule(schedule_id: UUID, schedule: ScheduleBase):
   with Session(get_engine()) as db:
     db_schedule = db.query(Schedule).get(schedule_id)
     if not db_schedule:
