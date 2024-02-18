@@ -10,7 +10,7 @@ from api.utils.db_utils import get_engine  # Add this function in db_functions.p
 router = APIRouter(tags=["admin -> activities"])
 
 
-##app = FastAPI()
+()
 
 class ActivityBase(BaseModel):
   activityid: str

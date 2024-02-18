@@ -1,6 +1,5 @@
 # task
 from typing import List, Optional
-from uuid import UUID
 from datetime import date
 from api.dao.entities import Task  # Assuming that Task model is in app.models module
 from fastapi import HTTPException, APIRouter
@@ -13,8 +12,8 @@ router = APIRouter(tags=["admin -> task"])
 
 
 class TaskBase(BaseModel):
-  taskid: UUID
-  userid: UUID
+  taskid: str
+  userid: str
   type: Optional[str]
   extid: Optional[str]
   due_dt: Optional[date]
@@ -22,10 +21,10 @@ class TaskBase(BaseModel):
   status: Optional[str]
   created_dt: Optional[date]
   data: Optional[dict]
-  surveyid: Optional[UUID]
-  appointmentid: Optional[UUID]
-  medicationid: Optional[UUID]
-  scheduleid: Optional[UUID]
+  surveyid: Optional[str]
+  appointmentid: Optional[str]
+  medicationid: Optional[str]
+  scheduleid: Optional[str]
 
 
 
@@ -36,17 +35,15 @@ def create_task(task: TaskBase):
     db.add(db_task)
     db.commit()
     db.refresh(db_task)
-
     return db_task
 
 
 @router.get("/get/{task_id}") #, response_model=TaskInDB
-def get_task(task_id: UUID):
+def get_task(task_id: str):
   with Session(get_engine()) as db:
     db_task = db.query(Task).get(task_id)
     if db_task is None:
       raise HTTPException(status_code=404, detail="Task not found")
-
     return db_task
 
 
@@ -58,7 +55,7 @@ def list_tasks(skip: int = 0, limit: int = 100):
 
 
 @router.put("/update/{task_id}") #, response_model=TaskInDB
-def update_task(task_id: UUID, task: TaskBase):
+def update_task(task_id: str, task: TaskBase):
   with Session(get_engine()) as db:
     db_task = db.query(Task).get(task_id)
     if not db_task:
@@ -76,7 +73,7 @@ def update_task(task_id: UUID, task: TaskBase):
 
 
 @router.delete("/delete/{task_id}")
-def delete_task(task_id: UUID):
+def delete_task(task_id: str):
   with Session(get_engine()) as db:
     db_task = db.query(Task).get(task_id)
     if not db_task:

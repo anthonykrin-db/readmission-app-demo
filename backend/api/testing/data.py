@@ -26,42 +26,7 @@ from api.admin.users import create_user, update_user, get_user
 
 # Some UUIDs
 
-# e56e0fc1-c4dc-448f-82e3-826de8017e57
-# acbb81bc-a0ef-4da2-85c9-1f6fb43c8e3c
-# 28ea74c8-9235-43f5-af2e-9d28c9dc0aac
-# bcabbc92-c582-4996-b83c-561dfd896a65
-# d3e653a9-9bb3-410e-92a1-f7c85a82b16b
-# e024416c-3d3f-4eaf-bf99-b44894d238bd
-# a4a07a0e-7db6-487b-83dd-616d3d4382f2
-# e0478a7b-6264-410c-abe8-599766aeb13b
-# 80f8b5e5-17da-420e-a89b-17ced0be5218
-# 850b0e9b-39d4-4716-8a05-523252ba8965
-# 84b37e75-98cd-4f58-822b-d1736b81521c
-# a35c4895-bf96-49f1-b1e5-e0c38f2509a1
-# 2e5950d9-ea8c-4e51-ad3d-c75dd13d4406
-# 0c455362-f1fe-47bf-b216-68a371e622dc
-# 0f92d24b-d657-4570-a6ac-d680f119a722
-# a8ccd4c3-e887-4d81-aaea-9109580735d7
-# db89123c-82a5-40be-8ea2-90f37035dc89
-# 67e1fd1c-0470-4b34-96cd-3197d40df29c
-# 487c9037-8cc1-464b-a830-4eab9a624a73
-# b5de52bb-1cca-4e3a-a15b-f46b2b50d5cb
-# 4481c2f0-f385-451a-88c8-e12fedbaead5
-# 5bda2fc8-75ab-4a77-9c66-30f170ba109e
-# 7d093e63-0c22-4685-bcae-4f732de7bded
-# 211343cd-e489-4ca1-8ec4-7838c427715e
-# 043f0232-612d-40e2-8f79-eed547452e10
-# 820569ea-18ea-4eaf-a2ed-ae3ed68e17e4
-# cf83e400-9960-4794-9d20-188f8fd71aee
-# 9e2e9546-6f8e-4f0c-b20f-2ae4434281b9
-# d5348515-ddaf-44a4-902a-ed90f87e58e5
-# 9c07fbf9-e275-476a-be40-3cb0d6fbda5a
-# fa0cba75-2669-4d2b-9868-8eddf45b7311
-# 2694b72c-28d2-4d5b-9244-c2de523b746f
-# c40916f3-eca5-4632-832a-31533f41e4e8
-# 863b47d0-7c77-4d6e-bb90-5fc760b25d03
-# ce0a4909-1124-480a-93ed-d0a312e16839
-# df0fe121-2de6-4fdd-8678-53168acb3b8e
+
 # 2d13644a-a20b-41f0-88bb-d74efe3cdb58
 # 022ab58b-c8d3-41c8-86d4-f7f805e22e71
 # f4c3b5b7-eb87-4b32-8787-5b5df904547f
@@ -127,6 +92,7 @@ class DemoData:
     self.tasks = []
     self.surveys = []
     self.appointments = []
+    self.schedules = []
 
   def create_task(self):
 
@@ -186,7 +152,7 @@ class DemoData:
         "status": "completed",
         "created_dt": "2023-03-31",
         "data": {"detail": "task detail 4"},
-        "surveyid": "df581939-1262-4451-8233-b20ae7469df2",
+        "surveyid": "45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1",
         "appointmentid": None,
         "medicationid": None,
         "scheduleid": None
@@ -224,13 +190,13 @@ class DemoData:
     #
     #
     #
-    # 45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1
+    #
     # dc53180d-6bf6-4d11-996e-50f505763936
     # 69eedc33-84ba-4ddf-91f7-fcb9fff549a8
     # b1960598-05c2-4a9c-a782-1993d13309ba
     surveys_data = [
       {
-        "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
+        "surveyid": "45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1",
         "title": "Survey 1",
         "description": "This is the first survey.",
         "created_dt": "2023-03-30",
@@ -238,7 +204,7 @@ class DemoData:
         "final_msg": "Thank you for completing the survey!"
       },
       {
-        "surveyid": "bd9d3015-1a6b-4ccd-8720-24c22406c6a1",
+        "surveyid": "d04e2460-f89a-4488-af55-b8fcc13e3955",
         "title": "Survey 2",
         "description": "This is the second survey.",
         "created_dt": "2023-03-31",
@@ -246,7 +212,7 @@ class DemoData:
         "final_msg": "Your response has been recorded. Thank you!"
       },
       {
-        "surveyid": "c310ffd4-d1cf-47a9-b497-4eeb4c0fd4d1",
+        "surveyid": "c93d2359-e999-4477-af54-a7ebc12f3844",
         "title": "Survey 3",
         "description": None,
         "created_dt": "2023-04-01",
@@ -254,7 +220,7 @@ class DemoData:
         "final_msg": "We appreciate your time spent on this survey."
       },
       {
-        "surveyid": "a9d7c76f-40dd-454e-a263-d598c5d7f061",
+        "surveyid": "b82c2248-d898-4466-af53-a6dbf11e3733",
         "title": "Survey 4",
         "description": "This is the fourth survey.",
         "created_dt": "2023-04-02",
@@ -262,7 +228,7 @@ class DemoData:
         "final_msg": None
       },
       {
-        "surveyid": "ce814d52-a300-4304-b629-8d574b642de1",
+        "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
         "title": "Survey 5",
         "description": None,
         "created_dt": "2023-04-03",
@@ -298,58 +264,66 @@ class DemoData:
         create_session(session)
 
   def create_schedule(self):
-
+    #
+    #
+    #
+    #
+    #
+    # b5de52bb-1cca-4e3a-a15b-f46b2b50d5cb
+    # 4481c2f0-f385-451a-88c8-e12fedbaead5
+    # 5bda2fc8-75ab-4a77-9c66-30f170ba109e
+    # 7d093e63-0c22-4685-bcae-4f732de7bded
     schedules_data = [
       {
-        "scheduleid": "a123b456-c789-d012-e345-f678g901",
+        "scheduleid": "0f92d24b-d657-4570-a6ac-d680f119a722",
         "label": "Work Schedule",
         "type": "Work",
         "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
-        "dow_mask": "Monday, Tuesday, Wednesday, Thursday, Friday",
+        "dow_mask": "MTWTF--",
         "start_dt": "2023-04-01",
         "end_dt": "2023-04-30",
         "repeats": True,
         "data": None
       },
       {
-        "scheduleid": "b234c567-d890-e123-f456-g789h012",
+        "scheduleid": "a8ccd4c3-e887-4d81-aaea-9109580735d7",
         "label": "Gym Schedule",
         "type": "Exercise",
         "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
-        "dow_mask": "Monday, Wednesday, Friday",
+        "dow_mask": "M-W-F--",
         "start_dt": "2023-04-01",
         "end_dt": "2023-04-30",
         "repeats": True,
         "data": None
       },
       {
-        "scheduleid": "c345d678-e901-f234-g567-h890i123",
+        "scheduleid": "db89123c-82a5-40be-8ea2-90f37035dc89",
         "label": "Study Schedule",
         "type": "Study",
         "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
-        "dow_mask": "Tuesday, Thursday, Saturday",
+        "dow_mask": "-T-T---",
         "start_dt": "2023-04-01",
         "end_dt": "2023-04-30",
         "repeats": True,
         "data": None
       },
       {
-        "scheduleid": "d456e789-f012-g345-h678-i901j234",
+        "scheduleid": "487c9037-8cc1-464b-a830-4eab9a624a73",
         "label": "Meditation Schedule",
         "type": "Meditation",
         "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
-        "dow_mask": "Everyday",
+        "dow_mask": "MTWTFSS",
         "start_dt": "2023-04-01",
         "end_dt": "2023-04-30",
         "repeats": True,
         "data": None
       },
       {
-        "scheduleid": "e567f890-g123-h456-i789-j012k345",
+        "scheduleid": "67e1fd1c-0470-4b34-96cd-3197d40df29c",
         "label": "Reading Schedule",
         "type": "Reading",
         "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
-        "dow_mask": "Thursday, Friday, Saturday, Sunday",
+        "dow_mask": "---TFSS",
         "start_dt": "2023-04-01",
         "end_dt": "2023-04-30",
         "repeats": True,
@@ -370,9 +344,20 @@ class DemoData:
 
   def create_response(self):
 
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+    #
+
     responses_data = [
       {
-        "responseid": "a1b2c3d4-e5f6-g7h8-i9j10-k11l12m13",
+        "responseid": "a4a07a0e-7db6-487b-83dd-616d3d4382f2",
         "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
         "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
         "questionid": "a91b3357-c998-4455-bf52-a5dae20c3732",
@@ -381,7 +366,7 @@ class DemoData:
         "skipped": False
       },
       {
-        "responseid": "b1c2d3e4-f5g6-h7i8-j9k10-l11m12n13",
+        "responseid": "e0478a7b-6264-410c-abe8-599766aeb13b",
         "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
         "surveyid": "b82c2248-d898-4466-af53-a6dbf11e3733",
         "questionid": "b22c4478-d999-4466-af53-a6dbf21d3733",
@@ -390,7 +375,7 @@ class DemoData:
         "skipped": False
       },
       {
-        "responseid": "c1d2e3f4-g5h6-i7j8-k9l10-m11n12o13",
+        "responseid": "80f8b5e5-17da-420e-a89b-17ced0be5218",
         "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
         "surveyid": "c93d2359-e999-4477-af54-a7ebc12f3844",
         "questionid": "c33d5599-e159-4477-af54-a7ebc22e3844",
@@ -399,7 +384,7 @@ class DemoData:
         "skipped": False
       },
       {
-        "responseid": "d1e2f3g4-h5i6-j7k8-l9m10-n11o12p13",
+        "responseid": "850b0e9b-39d4-4716-8a05-523252ba8965",
         "userid": "f41a60dc-2244-4875-838b-05167c9b5fb0",
         "surveyid": "d04e2460-f89a-4488-af55-b8fcc13e3955",
         "questionid": "d44e6690-f2aa-4488-af55-b8fcc23f3955",
@@ -408,15 +393,20 @@ class DemoData:
         "skipped": False
       },
       {
-        "responseid": "e1f2g3h4-i5j6-k7l8-m9n10-o11p12q13",
+        "responseid": "84b37e75-98cd-4f58-822b-d1736b81521c",
         "userid": "eddca073-6d69-477e-97e3-71b18b926c50",
-        "surveyid": "e15f2571-g89b-4499-af56-c9fdd14f3966",
-        "questionid": "e55f7791-g3bb-4499-af56-c9fdd24f3966",
+        "surveyid": "45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1",
+        "questionid": "e024416c-3d3f-4eaf-bf99-b44894d238bd",
         "answers": "Through a friend",
         "other": None,
         "skipped": False
       }
     ]
+
+    #
+    # a35c4895-bf96-49f1-b1e5-e0c38f2509a1
+    # 2e5950d9-ea8c-4e51-ad3d-c75dd13d4406
+    # 0c455362-f1fe-47bf-b216-68a371e622dc
 
     for data in responses_data:
       response = ResponseBase(**data)
@@ -437,7 +427,7 @@ class DemoData:
         "surveyid": "a81b2237-c897-4455-af52-a5dae10d3722",
         "type": "choice",
         "question": "What is your favorite color?",
-        "responses": "Red,Blue,Green,Yellow",
+        "possible_responses": "Red,Blue,Green,Yellow",
         "data": None,
         "multiple_choice": False,
         "has_other": True,
@@ -449,7 +439,7 @@ class DemoData:
         "surveyid": "b82c2248-d898-4466-af53-a6dbf11e3733",
         "type": "choice",
         "question": "What is your favorite animal?",
-        "responses": "Dog,Cat,Bird,Fish",
+        "possible_responses": "Dog,Cat,Bird,Fish",
         "data": None,
         "multiple_choice": False,
         "has_other": False,
@@ -461,7 +451,7 @@ class DemoData:
         "surveyid": "c93d2359-e999-4477-af54-a7ebc12f3844",
         "type": "open",
         "question": "What is your favorite food?",
-        "responses": None,
+        "possible_responses": None,
         "data": None,
         "multiple_choice": False,
         "has_other": False,
@@ -473,7 +463,7 @@ class DemoData:
         "surveyid": "d04e2460-f89a-4488-af55-b8fcc13e3955",
         "type": "rating",
         "question": "How much do you like our service?",
-        "responses": "1,2,3,4,5",
+        "possible_responses": "1,2,3,4,5",
         "data": None,
         "multiple_choice": False,
         "has_other": False,
@@ -481,11 +471,11 @@ class DemoData:
         "sequence": 1
       },
       {
-        "questionid": "e55f7791-g3bb-4499-af56-c9fdd24f3966",
-        "surveyid": "e15f2571-g89b-4499-af56-c9fdd14f3966",
+        "questionid": "e024416c-3d3f-4eaf-bf99-b44894d238bd",
+        "surveyid": "45cd4b8b-8757-43f1-b5f8-76c9cbdbe8a1",
         "type": "open",
         "question": "How did you hear about us?",
-        "responses": None,
+        "possible_responses": None,
         "data": None,
         "multiple_choice": False,
         "has_other": False,
@@ -557,9 +547,23 @@ class DemoData:
 
   def create_appointments(self):
 
+    #
+    #
+    #
+    #
+    #
+    #
+    # 9c07fbf9-e275-476a-be40-3cb0d6fbda5a
+    # fa0cba75-2669-4d2b-9868-8eddf45b7311
+    # 2694b72c-28d2-4d5b-9244-c2de523b746f
+    # c40916f3-eca5-4632-832a-31533f41e4e8
+    # 863b47d0-7c77-4d6e-bb90-5fc760b25d03
+    # ce0a4909-1124-480a-93ed-d0a312e16839
+    # df0fe121-2de6-4fdd-8678-53168acb3b8e
+
     appointments_data = [
       {
-        "appointmentid": "a1b2c3d4-e5f6-g7h8-i9j10-k11l12m13",
+        "appointmentid": "211343cd-e489-4ca1-8ec4-7838c427715e",
         "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
         "start_date": "2023-05-01",
         "end_date": "2023-05-01",
@@ -575,7 +579,7 @@ class DemoData:
         "days_reminder": 7
       },
       {
-        "appointmentid": "b2c3d4e5-f6g7-h8i9-j10k11-l12m13n14",
+        "appointmentid": "043f0232-612d-40e2-8f79-eed547452e10",
         "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
         "start_date": "2023-06-01",
         "end_date": "2023-06-01",
@@ -591,7 +595,7 @@ class DemoData:
         "days_reminder": 7
       },
       {
-        "appointmentid": "c3d4e5f6-g7h8-i9j10-k11l12-m13n14o15",
+        "appointmentid": "820569ea-18ea-4eaf-a2ed-ae3ed68e17e4",
         "userid": "094f0422-bad1-4f36-8ae0-4286012d8109",
         "start_date": "2023-07-01",
         "end_date": "2023-07-01",
@@ -607,7 +611,7 @@ class DemoData:
         "days_reminder": 7
       },
       {
-        "appointmentid": "d4e5f6g7-h8i9-j10k11-l12m13-n14o15p16",
+        "appointmentid": "cf83e400-9960-4794-9d20-188f8fd71aee",
         "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
         "start_date": "2023-05-02",
         "end_date": "2023-05-02",
@@ -623,7 +627,7 @@ class DemoData:
         "days_reminder": 5
       },
       {
-        "appointmentid": "e5f6g7h8-i9j10-k11l12-m13n14-o15p16q17",
+        "appointmentid": "9e2e9546-6f8e-4f0c-b20f-2ae4434281b9",
         "userid": "2a10bfe7-ee4c-4760-8c70-cbd5bc80a47a",
         "start_date": "2023-06-02",
         "end_date": "2023-06-02",
@@ -639,7 +643,7 @@ class DemoData:
         "days_reminder": 5
       },
       {
-        "appointmentid": "f6g7h8i9-j10k11-l12m13-n14o15-p16q17r18",
+        "appointmentid": "d5348515-ddaf-44a4-902a-ed90f87e58e5",
         "userid": "68df4738-4c0b-413d-b0d2-1d7f83df50fe",
         "start_date": "2023-05-03",
         "end_date": "2023-05-03",

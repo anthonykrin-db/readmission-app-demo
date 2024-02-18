@@ -50,7 +50,7 @@ class Users(Base):
 class Appointment(Base):
   __tablename__ = 'appointment'
   appointmentid = Column(UUID(as_uuid=True), primary_key=True)
-  userid = Column(UUID(as_uuid=True), nullable=False)
+  userid = Column(UUID(as_uuid=True), ForeignKey('users.userid'), nullable=False)
   start_date = Column(Date, nullable=False)
   end_date = Column(Date)
   location = Column(String(200))
@@ -62,11 +62,10 @@ class Appointment(Base):
   reschedule_phone = Column(String(200))
   cancelled = Column(Boolean, default=False, nullable=False)
   cancelled_dt = Column(Date)
-  days_reminder = Column(Integer, default=0, nullable=False)
-  # Foreign keys
-  userid = Column(UUID(as_uuid=True), ForeignKey('users.userid'))
+  days_reminder = Column(Integer, default=1, nullable=False)
   # Relationships
-  tasks = relationship('Task', backref='appointment')
+  #add this back later
+  #tasks = relationship('Task', backref='appointment')
 
 
 class Contact(Base):
@@ -108,17 +107,16 @@ class Medication(Base):
 class Question(Base):
   __tablename__ = 'question'
   questionid = Column(UUID(as_uuid=True), primary_key=True)
-  surveyid = Column(UUID(as_uuid=True), nullable=False)
+  surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'),nullable=False)
   type = Column(String(50), nullable=False)
   question = Column(String(100), nullable=False)
-  responses = Column(String(500))
+  possible_responses = Column(String(500))
   data = Column(JSON)
   multiple_choice = Column(Boolean)
   has_other = Column(Boolean)
   other_label = Column(String)
   sequence = Column(Integer, default=1, nullable=False)
   # Foreign keys
-  surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'))
   # Relationships
   responses = relationship('Response', backref='question')
 
@@ -162,9 +160,10 @@ class Survey(Base):
 
 class Response(Base):
   __tablename__ = 'response'
-  userid = Column(UUID(as_uuid=True), ForeignKey('users.userid'), primary_key=True)
-  surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'), primary_key=True)
-  questionid = Column(UUID(as_uuid=True), ForeignKey('question.questionid'), primary_key=True)
+  responseid = Column(UUID(as_uuid=True), primary_key=True)
+  userid = Column(UUID(as_uuid=True), ForeignKey('users.userid'))
+  surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'))
+  questionid = Column(UUID(as_uuid=True), ForeignKey('question.questionid'))
   answers = Column(String(500))
   other = Column(String(500))
   skipped = Column(Boolean, default=False)
@@ -181,12 +180,8 @@ class Task(Base):
   status = Column(String(50))
   created_dt = Column(Date)
   data = Column(JSON)
-  surveyid = Column(UUID(as_uuid=True))
-  appointmentid = Column(UUID(as_uuid=True))
-  medicationid = Column(UUID(as_uuid=True))
-  scheduleid = Column(UUID(as_uuid=True))
-  # Foreign keys
   surveyid = Column(UUID(as_uuid=True), ForeignKey('survey.surveyid'))
   appointmentid = Column(UUID(as_uuid=True), ForeignKey('appointment.appointmentid'))
   medicationid = Column(UUID(as_uuid=True), ForeignKey('medication.medicationid'))
   scheduleid = Column(UUID(as_uuid=True), ForeignKey('schedule.scheduleid'))
+  # Foreign keys

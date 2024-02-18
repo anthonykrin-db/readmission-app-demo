@@ -1,6 +1,5 @@
-from typing import List, Optional
-from uuid import UUID
 from datetime import date
+from typing import Optional
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -9,12 +8,9 @@ from api.utils.db_utils import get_engine
 
 router = APIRouter(tags=["admin -> appointment"])
 
-
-##app = FastAPI()
-
 class AppointmentBase(BaseModel):
-  appointmentid: UUID
-  userid: UUID
+  appointmentid: str
+  userid: str
   start_date: date
   end_date: Optional[date]
   location: Optional[str]
@@ -29,7 +25,7 @@ class AppointmentBase(BaseModel):
   days_reminder: int = 0
 
 
-@router.post("/create") #, response_model=Appointment
+@router.post("/create")  # , response_model=Appointment
 def create_appointment(appointment: AppointmentBase):
   with Session(get_engine()) as db:
     db_appointment = AppointmentBase(**appointment.dict())
@@ -39,8 +35,8 @@ def create_appointment(appointment: AppointmentBase):
     return db_appointment
 
 
-@router.get("/get/{appointment_id}") #, response_model=Appointment
-def get_appointment(appointment_id: UUID):
+@router.get("/get/{appointment_id}")  # , response_model=Appointment
+def get_appointment(appointment_id: str):
   with Session(get_engine()) as db:
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:
@@ -48,15 +44,15 @@ def get_appointment(appointment_id: UUID):
     return db_appointment
 
 
-@router.get("/list/") #, response_model=List[Appointment]
+@router.get("/list/")  # , response_model=List[Appointment]
 def list_appointments(skip: int = 0, limit: int = 100):
   with Session(get_engine()) as db:
     appointments = db.query(Appointment).offset(skip).limit(limit).all()
     return appointments
 
 
-@router.put("/update/{appointment_id}") #, response_model=Appointment
-def update_appointment(appointment_id: UUID, appointment: AppointmentBase):
+@router.put("/update/{appointment_id}")  # , response_model=Appointment
+def update_appointment(appointment_id: str, appointment: AppointmentBase):
   with Session(get_engine()) as db:
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:
@@ -68,7 +64,7 @@ def update_appointment(appointment_id: UUID, appointment: AppointmentBase):
 
 
 @router.delete("/delete/{appointment_id}")
-def delete_appointment(appointment_id: UUID):
+def delete_appointment(appointment_id: str):
   with Session(get_engine()) as db:
     db_appointment = db.query(Appointment).filter(Appointment.appointmentid == appointment_id).first()
     if db_appointment is None:

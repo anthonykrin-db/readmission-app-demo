@@ -15,8 +15,9 @@ def create_demo_data():
   demo.create_users()
   demo.create_contact()
   demo.create_survey()
-  #demo.create_question()
-  #demo.create_response()
-  #demo.create_schedule()
+  demo.create_question()
+  demo.create_response()
+  demo.create_schedule()
+  # failing with Appointmentss
   #demo.create_appointments()
   return "Created demo data"

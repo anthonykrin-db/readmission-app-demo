@@ -1,7 +1,6 @@
 # response
 from typing import List, Optional
-from uuid import UUID
-
+#from uuid import str
 from api.dao.entities import Response  # assuming that Response model is defined in app.models module
 from fastapi import HTTPException, APIRouter
 from pydantic import BaseModel
@@ -12,10 +11,10 @@ router = APIRouter(tags=["admin -> response"])
 
 
 class ResponseBase(BaseModel):
-  responseid: UUID
-  userid: UUID
-  surveyid: UUID
-  questionid: UUID
+  responseid: str
+  userid: str
+  surveyid: str
+  questionid: str
   answers: Optional[str]
   other: Optional[str]
   skipped: Optional[bool]
@@ -33,7 +32,7 @@ def create_response(response: ResponseBase):
 
 
 @router.get("/get/{response_id}") #, response_model=ResponseInDB
-def get_response(response_id: UUID):
+def get_response(response_id: str):
   with Session(get_engine()) as db:
     db_response = db.query(Response).get(response_id)
     if db_response is None:
@@ -50,7 +49,7 @@ def list_responses(skip: int = 0, limit: int = 100):
 
 
 @router.put("/update/{response_id}") #, response_model=ResponseInDB
-def update_response(response_id: UUID, response: ResponseBase):
+def update_response(response_id: str, response: ResponseBase):
   with Session(get_engine()) as db:
     db_response = db.query(Response).get(response_id)
     if not db_response:
@@ -68,7 +67,7 @@ def update_response(response_id: UUID, response: ResponseBase):
 
 
 @router.delete("/delete/{response_id}")
-def delete_response(response_id: UUID):
+def delete_response(response_id: str):
   with Session(get_engine()) as db:
     db_response = db.query(Response).get(response_id)
     if not db_response:
