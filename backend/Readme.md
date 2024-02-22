@@ -8,7 +8,7 @@
 
 
 
-1. navigate to /python_api
+1. navigate to /backend
 
 2. run:
 
