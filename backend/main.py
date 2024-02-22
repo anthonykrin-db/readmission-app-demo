@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 from api.health import router as api_health  # import the router we defined in routes.py
-from api.auth import router as api_auth  # import the router we defined in routes.py
+from api.auth.auth_handler import router as api_auth  # import the router we defined in routes.py
 from api.survey import router as api_survey  # import the router we defined in routes.py
 
 from api.admin.activity import router as api_admin_activity
@@ -18,6 +18,7 @@ from api.admin.survey import router as api_admin_survey
 from api.admin.task import router as api_admin_task
 from api.admin.users import router as api_admin_user
 from api.testing.demo_data import router as api_testing_demo_data
+from api.testing.tokens import router as api_testing_tokens
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -58,6 +59,7 @@ app.include_router(api_admin_user, prefix='/api/admin/users')
 
 # Testing
 app.include_router(api_testing_demo_data, prefix='/api/testing/data')
+app.include_router(api_testing_tokens, prefix='/api/testing/tokens')
 
 
 @app.get("/")

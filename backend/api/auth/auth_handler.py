@@ -9,13 +9,15 @@ from sqlalchemy import and_
 import time
 from typing import Dict
 import jwt
-import os
-from dotenv import load_dotenv
+import os,sys
+from dotenv import load_dotenv, find_dotenv
 
-load_dotenv()  # Loads environment variables from .env file
+#TODO: we can improve this
+env_path = os.getcwd()+'/config/.env'  #try .path[0] if 1 doesn't work
+load_dotenv(env_path)
 
-JWT_SECRET = os.environ.get("JWT_SECRET")
-JWT_ALGORITHM = os.environ.get("JWT_ALGO")
+JWT_SECRET = os.environ.get("VUE_APP_JWT_SECRET")
+JWT_ALGORITHM = os.environ.get("VUE_APP_JWT_ALGO")
 
 router = APIRouter()
 
@@ -51,13 +53,20 @@ def signJWT(userid: str,username:str) -> Dict[str, str]:
     "username": username,
     "expires": time.time() + 600
   }
+  print("Attempting to encode using algorithm: {}".format(JWT_ALGORITHM))
   token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
   return token
 
 def decodeJWT(token: str) -> dict:
   try:
+    print("Attempting to decode using algorithm: {}".format(JWT_ALGORITHM))
     decoded_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    #debugging
+    print("Decoded: {}".format(decoded_token))
+    print("Expired: {}".format(decoded_token['expires'] < time.time()))
     return decoded_token if decoded_token["expires"] >= time.time() else None
-  except:
+  except jwt.DecodeError as e:
+    print("JWT Decode Error:", e)
     return {}
+
